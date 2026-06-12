@@ -124,17 +124,24 @@ function initTabs() {
     const geminiSidebar = document.getElementById('geminiSidebar');
     const sidebarCollapseBtn = document.getElementById('sidebarCollapseBtn');
     const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
     
     const toggleSidebar = () => {
-        geminiSidebar.classList.toggle('collapsed');
-        if (sidebarCollapseBtn) {
-            const isCollapsed = geminiSidebar.classList.contains('collapsed');
-            sidebarCollapseBtn.setAttribute('title', isCollapsed ? 'Expandir menu' : 'Recolher menu');
+        if (window.innerWidth <= 900) {
+            geminiSidebar.classList.toggle('expanded');
+            if (sidebarOverlay) sidebarOverlay.classList.toggle('show');
+        } else {
+            geminiSidebar.classList.toggle('collapsed');
+            if (sidebarCollapseBtn) {
+                const isCollapsed = geminiSidebar.classList.contains('collapsed');
+                sidebarCollapseBtn.setAttribute('title', isCollapsed ? 'Expandir menu' : 'Recolher menu');
+            }
         }
     };
 
     if (sidebarCollapseBtn) sidebarCollapseBtn.addEventListener('click', toggleSidebar);
     if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', toggleSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
 }
 
 async function reloadTabContent(tabId) {
