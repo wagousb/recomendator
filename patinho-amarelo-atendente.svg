@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Body & Head Fill -->
+    <path d="M 9,7.2 C 9,5.2 11,3.5 13,3.5 C 15.2,3.5 17,5.3 17,7.5 C 17,9.5 15.5,11.5 15,12.5 C 15.5,13 17.5,13 19.5,10.5 C 20.2,12.5 17,22 13.5,22 C 10.5,22 7,20.5 7,17.5 C 7,15.5 8,13.5 9.8,12.8 Z" fill="#fde047" stroke="none" />
+    <!-- Head Outline -->
+    <path d="M 9,7.2 C 9,5.2 11,3.5 13,3.5 C 15.2,3.5 17,5.3 17,7.5 C 17,9.5 15.5,11.5 15,12.5 C 15.5,13 17.5,13 19.5,10.5" />
+    <!-- Body Outline -->
+    <path d="M 9.8,12.8 C 8,13.5 7,15.5 7,17.5 C 7,20.5 10.5,22 13.5,22 C 17,22 19.5,19.5 20.2,12.5 C 20.3,11.5 20.1,10.8 19.5,10.5" />
+    <!-- Beak -->
+    <path d="M 9,7.2 C 7.5,7.2 6,7.8 5,8.5 C 4.5,9.2 6.5,10.2 8.8,10.2 C 9.3,9.2 9.2,8.2 9,7.2 Z" fill="#f97316" stroke="#ea580c" stroke-width="1.2" />
+    <!-- Eye -->
+    <circle cx="12" cy="7.5" r="1" fill="#0f172a" stroke="none" />
+
+    <!-- HEADSET (Attendant Headset) -->
+    <!-- Headband (placed higher above the head) -->
+    <path d="M 15.2,7.5 C 15.2,3.2 12.5,1.5 10.2,3.8" fill="none" stroke="#1e293b" stroke-width="1.8" stroke-linecap="round" />
+    <!-- Earmuff (auricular - shifted back to x=15.2, cy=8 to keep distance from the eye at x=12) -->
+    <ellipse cx="15.2" cy="8.0" rx="1.8" ry="2.6" fill="#0f172a" stroke="#1e293b" stroke-width="0.6" transform="rotate(15 15.2 8.0)" />
+    <ellipse cx="14.8" cy="8.0" rx="1.0" ry="1.8" fill="#94a3b8" stroke="none" transform="rotate(15 15.2 8.0)" />
+    <rect x="14.8" y="4.5" width="0.8" height="1.4" rx="0.4" fill="#94a3b8" stroke="none" />
+    <!-- Mic boom -->
+    <path d="M 15.2,8.0 C 15.2,11.5 11.0,12.5 4.5,9.5" fill="none" stroke="#0f172a" stroke-width="1" stroke-linecap="round" />
+    <!-- Mic tip -->
+    <ellipse cx="4.5" cy="9.5" rx="1" ry="0.8" fill="#1e293b" stroke="none" transform="rotate(-15 4.5 9.5)" />
+</svg>

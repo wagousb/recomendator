@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Recomendator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="patinho-favicon.png">
+    
+    <!-- PWA Settings -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+    <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+        <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+    </button>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <div class="glass-card">
+            <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                <img src="patinho-amarelo.svg" alt="Patinho" width="64" height="64">
+            </div>
+            <h1>Bem-vindo de volta</h1>
+            <p>Entre para acessar suas operações e históricos.</p>
+            
+            <form id="loginForm" action="#" method="POST">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Entrar na Plataforma</button>
+            </form>
+
+            <a href="register.html" class="footer-link">Novo por aqui? <span>Crie uma conta</span></a>
+            <a href="index.html" class="footer-link" style="margin-top: 1rem;">Voltar ao início</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendator</title>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="patinho-favicon.png">
+
+    <!-- PWA Settings -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <!-- Third-Party Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/standalone/umd/vis-network.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/javascript-lp-solver@0.4.24/prod/solver.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body class="gemini-app">
+
+    <div class="gemini-container">
+        <!-- Sidebar Left -->
+        <aside class="gemini-sidebar" id="geminiSidebar">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <span class="sidebar-brand-duck">
+                        <!-- Yellow Duck Logo -->
+                        <img src="patinho-amarelo.svg" alt="Recomendator Logo" width="26" height="26" style="vertical-align: middle;">
+                    </span>
+                    <span class="sidebar-header-text">Recomendator</span>
+                </div>
+                <button class="hamburger-btn" id="sidebarCollapseBtn" title="Recolher menu">
+                    <!-- Icon: panel-left-close -->
+                    <svg class="icon-collapse" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2"/>
+                        <path d="M9 3v18"/>
+                        <path d="m16 15-3-3 3-3"/>
+                    </svg>
+                    <!-- Icon: panel-left-open -->
+                    <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="18" x="3" y="3" rx="2"/>
+                        <path d="M9 3v18"/>
+                        <path d="m14 9 3 3-3 3"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Navigation Items (loaded dynamically) -->
+            <div class="sidebar-menu" id="sidebarCategoriesContainer">
+                <div style="padding: 1rem; color: var(--gemini-text-secondary); font-size: 0.85rem;">Carregando categorias...</div>
+            </div>
+
+            <!-- Admin Panel Link (hidden by default; shown only for admin email via JS) -->
+            <div class="sidebar-admin-link-wrapper" id="adminPanelLinkWrapper" style="padding: 0 12px; margin-top: auto; margin-bottom: 8px; display: none;">
+                <a href="admin.html" class="sidebar-item" style="text-decoration: none; color: var(--gemini-primary);" title="Painel Admin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="9" y1="3" x2="9" y2="21"/>
+                    </svg>
+                    <span class="sidebar-label">Painel Admin</span>
+                </a>
+            </div>
+
+            <!-- User Footer Profile Section -->
+            <div class="sidebar-footer">
+                <div class="user-profile-section" id="userProfileBtn">
+                    <div class="user-avatar" id="sidebarAvatar">U</div>
+                    <div class="user-info">
+                        <span class="user-name" id="sidebarUserName">Carregando...</span>
+                    </div>
+                    <button class="settings-btn" id="profileSettingsBtn" title="Opções da conta">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- settings / log out dropdown -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button onclick="fazerLogout()" class="profile-dropdown-item danger">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Sair da conta
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Main View -->
+        <main class="gemini-main">
+            <!-- Main Header Bar -->
+            <header class="gemini-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Expandir/Recolher menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div class="header-brand">
+                        <span class="header-brand-duck">
+                            <img src="patinho-amarelo.svg" alt="Recomendator Logo" width="26" height="26" style="vertical-align: middle;">
+                        </span>
+                        <span class="header-brand-text">Recomendator</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <!-- Light / Dark Mode Toggle button -->
+                    <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema"
+                        style="position: static; width: 36px; height: 36px; box-shadow: none; backdrop-filter: none; background: transparent; border: none; display: flex; align-items: center; justify-content: center; color: var(--gemini-text-primary);">
+                        <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"></svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Inner Layout -->
+            <div class="gemini-dashboard-layout" id="geminiDashboardLayout">
+                <!-- Chat Window -->
+                <div class="gemini-chat-pane">
+                    <div id="chat-messages">
+                        <!-- Loading State -->
+                        <div id="chat-loading"
+                            style="text-align: center; padding: 2rem; color: var(--gemini-text-secondary); width: 100%; margin: auto 0;">
+                            <div class="skeleton skeleton-text" style="width: 60%; margin: 0 auto 1rem;"></div>
+                            <div class="skeleton skeleton-item"
+                                style="height: 3.5rem; max-width: 600px; margin: 0 auto; border-radius: 16px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Gemini Input bar container -->
+                    <div class="gemini-input-container">
+                        <div class="gemini-input-bar">
+                            <!-- Prompt input field -->
+                            <input type="text" id="chat-input" placeholder="Diga algo...">
+
+                            <!-- Right controls -->
+                            <div class="input-right-controls">
+                                <!-- Toggle Ranking Button inside input bar -->
+                                <button id="input-toggle-ranking" class="input-action-btn" title="Ver/Ocultar Ranking" type="button" style="margin-right: 4px; width: auto; border-radius: 18px; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600; font-family: 'Outfit', sans-serif;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart-2">
+                                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                                    </svg>
+                                    <span>Ver Ranking</span>
+                                </button>
+
+                                <!-- Send icon button -->
+                                <button id="btn-send-chat" class="input-send-btn" aria-label="Enviar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <line x1="12" y1="19" x2="12" y2="5"></line>
+                                        <polyline points="5 12 12 5 19 12"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side Ranking Panel Drawer -->
+                <div class="gemini-ranking-pane">
+                    <div class="ranking-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px;">
+                            <h3 style="margin: 0; font-size: 1.15rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Ranking em Tempo Real</h3>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-left: auto;">
+                                <button id="btn-toggle-hasse" class="btn btn-secondary btn-compact"
+                                    style="display: none; align-items: center; gap: 0.4rem; padding: 0.35rem 0.7rem; font-size: 0.8rem; border-color: var(--gemini-border); background: var(--gemini-input-bg); border-radius: 20px !important; margin: 0 !important; width: auto !important;">
+                                    <span id="toggle-hasse-text">Ver Hasse</span>
+                                </button>
+                                <button id="btn-close-ranking" class="hamburger-btn" style="display: none; width: 32px; height: 32px; flex-shrink: 0;" title="Fechar Ranking">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Ranking List -->
+                    <div id="ranking-list-container" class="ranking-list-container">
+                        <div style="text-align: center; padding: 4rem 1.5rem; color: var(--gemini-text-secondary);">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                            <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--gemini-text-primary);">Nenhum
+                                Critério Selecionado</h4>
+                            <p style="font-size: 0.9rem; max-width: 250px; margin: 0.5rem auto 0; line-height: 1.4;">
+                                Inicie o chat ao lado para selecionar os critérios e visualizar o ranking.</p>
+                        </div>
+                    </div>
+
+                    <!-- Live Hasse Diagram -->
+                    <div id="hasse-container" class="hasse-container"
+                        style="display: none; height: 100%; min-height: 400px;"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    </div>
+
+    <!-- Core Javascript Files -->
+    <script src="app.js"></script>
+    <script src="chat.js"></script>
+</body>
+
+</html>

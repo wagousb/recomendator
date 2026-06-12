@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendator</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Você merece o melhor!">
+    <link rel="icon" type="image/png" href="patinho-favicon.png">
+    
+    <!-- PWA Settings -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+    <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+        <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+    </button>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <div class="glass-card">
+            <h1 style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 0.5rem;">
+                <img src="patinho-amarelo.svg" alt="Patinho" width="38" height="38" style="vertical-align: middle;">
+                <span>Recomendator</span>
+            </h1>
+            <p>Você merece o melhor!</p>
+            
+            <div class="actions">
+                <a href="login.html" class="btn btn-primary">Fazer Login</a>
+                <a href="register.html" class="btn btn-secondary">Criar Conta Grátis</a>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+</body>
+</html>
