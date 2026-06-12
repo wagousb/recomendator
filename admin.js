@@ -77,6 +77,123 @@ document.addEventListener('DOMContentLoaded', async () => {
             setTimeout(syncLogoWithTheme, 50);
         });
     }
+
+    // 7. Brand Clicking Navigation
+    const sidebarBrand = document.querySelector('.sidebar-brand');
+    const headerBrand = document.querySelector('.header-brand');
+    if (sidebarBrand) {
+        sidebarBrand.onclick = (e) => {
+            e.preventDefault();
+            const sidebar = document.getElementById('recomendatorSidebar');
+            if (sidebar && sidebar.classList.contains('collapsed')) {
+                const collapseBtn = document.getElementById('sidebarCollapseBtn');
+                if (collapseBtn) {
+                    collapseBtn.click();
+                } else {
+                    sidebar.classList.remove('collapsed');
+                }
+            } else {
+                window.location.href = 'chat.html';
+            }
+        };
+    }
+    if (headerBrand) {
+        headerBrand.onclick = (e) => {
+            e.preventDefault();
+            window.location.href = 'chat.html';
+        };
+    }
+
+    // Bind profile settings dropdown menu
+    const userProfileBtn = document.getElementById('userProfileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+    if (userProfileBtn && profileDropdown) {
+        userProfileBtn.onclick = (e) => {
+            if (typeof updatePWAInstallVisibility === 'function') {
+                updatePWAInstallVisibility();
+            }
+            profileDropdown.classList.toggle('show');
+            e.stopPropagation();
+        };
+        document.addEventListener('click', () => {
+            profileDropdown.classList.remove('show');
+        });
+    }
+
+    const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+    if (pwaInstallBtn) {
+        pwaInstallBtn.onclick = async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            profileDropdown.classList.remove('show');
+            
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const isLocalFile = window.location.protocol === 'file:';
+            
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                if (typeof updatePWAInstallVisibility === 'function') {
+                    updatePWAInstallVisibility();
+                }
+            } else if (isLocalFile) {
+                Swal.fire({
+                    title: 'Servidor Local Necessário',
+                    html: `
+                        <div style="text-align: left; font-size: 0.95rem; line-height: 1.6; color: var(--app-text-primary);">
+                            <p>Instalação de PWA não é suportada rodando como arquivo local (<code>file://</code>).</p>
+                            <p style="margin-top: 10px; color: var(--app-text-secondary);">Para poder instalar o <strong>Recomendator</strong>:</p>
+                            <ol style="padding-left: 1.2rem; margin: 10px 0; color: var(--app-text-secondary);">
+                                <li style="margin-bottom: 8px;">Execute o app sob um servidor local (ex: usando a extensão <strong>Live Server</strong> do VS Code, ou rodando <code>npx serve</code> no terminal).</li>
+                                <li>Acesse através de <code>http://localhost</code> ou uma URL segura (<code>https://</code>).</li>
+                            </ol>
+                        </div>
+                    `,
+                    icon: 'warning',
+                    confirmButtonText: 'Entendi',
+                    customClass: { popup: 'swal-recomendator' }
+                });
+            } else if (isIOS) {
+                // Show custom installation instructions for iOS/Safari
+                Swal.fire({
+                    title: 'Instalar Aplicativo',
+                    html: `
+                        <div style="text-align: left; font-size: 0.95rem; line-height: 1.6; color: var(--app-text-primary);">
+                            <p>Para instalar o <strong>Recomendator</strong> no seu iPhone ou iPad:</p>
+                            <ol style="padding-left: 1.2rem; margin: 10px 0; color: var(--app-text-secondary);">
+                                <li style="margin-bottom: 8px;">Toque no ícone de <strong>Compartilhar</strong> <span style="font-size: 1.2rem; vertical-align: middle;">📤</span> na barra inferior do Safari.</li>
+                                <li style="margin-bottom: 8px;">Role a lista de opções para baixo e selecione <strong>Adicionar à Tela de Início</strong> <span style="font-size: 1.2rem; vertical-align: middle;">➕</span>.</li>
+                                <li>Confirme clicando em <strong>Adicionar</strong> no canto superior direito.</li>
+                            </ol>
+                        </div>
+                    `,
+                    icon: 'info',
+                    confirmButtonText: 'Entendi',
+                    customClass: { popup: 'swal-recomendator' }
+                });
+            } else {
+                // Generic fallback (Incognito mode or unsupported desktop browser)
+                Swal.fire({
+                    title: 'Como Instalar',
+                    html: `
+                        <div style="text-align: left; font-size: 0.95rem; line-height: 1.6; color: var(--app-text-primary);">
+                            <p>Se o prompt de instalação não apareceu automaticamente, certifique-se de que:</p>
+                            <ul style="padding-left: 1.2rem; margin: 10px 0; color: var(--app-text-secondary);">
+                                <li style="margin-bottom: 8px;">Você <strong>não</strong> está em uma guia de <strong>Navegação Anônima</strong> (elas desativam a instalação de aplicativos).</li>
+                                <li style="margin-bottom: 8px;">No canto direito da barra de endereços (URL) do seu navegador, clique no ícone de instalação <span style="font-size: 1.25rem;">🖥️</span> ou <span style="font-size: 1.25rem;">⊕</span>.</li>
+                                <li>Ou clique no menu do navegador (três pontos) e selecione a opção <strong>"Instalar Recomendator..."</strong>.</li>
+                            </ul>
+                        </div>
+                    `,
+                    icon: 'info',
+                    confirmButtonText: 'Entendi',
+                    customClass: { popup: 'swal-recomendator' }
+                });
+            }
+        };
+    }
     
     // Create lucide icons on load
     if (window.lucide) {
@@ -121,19 +238,19 @@ function initTabs() {
     });
 
     // Sidebar collapse controls
-    const geminiSidebar = document.getElementById('geminiSidebar');
+    const recomendatorSidebar = document.getElementById('recomendatorSidebar');
     const sidebarCollapseBtn = document.getElementById('sidebarCollapseBtn');
     const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     
     const toggleSidebar = () => {
         if (window.innerWidth <= 900) {
-            geminiSidebar.classList.toggle('expanded');
+            recomendatorSidebar.classList.toggle('expanded');
             if (sidebarOverlay) sidebarOverlay.classList.toggle('show');
         } else {
-            geminiSidebar.classList.toggle('collapsed');
+            recomendatorSidebar.classList.toggle('collapsed');
             if (sidebarCollapseBtn) {
-                const isCollapsed = geminiSidebar.classList.contains('collapsed');
+                const isCollapsed = recomendatorSidebar.classList.contains('collapsed');
                 sidebarCollapseBtn.setAttribute('title', isCollapsed ? 'Expandir menu' : 'Recolher menu');
             }
         }
@@ -275,7 +392,7 @@ async function loadCategories() {
 
         tbody.innerHTML = '';
         if (categories.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--gemini-text-secondary);">Nenhuma categoria cadastrada.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--app-text-secondary);">Nenhuma categoria cadastrada.</td></tr>';
             return;
         }
 
@@ -283,14 +400,14 @@ async function loadCategories() {
             const tr = document.createElement('tr');
             tr.setAttribute('data-id', cat.id);
             tr.innerHTML = `
-                <td class="drag-handle" title="Arraste para reordenar" style="cursor: grab; text-align: center; color: var(--gemini-text-secondary); user-select: none;">
+                <td class="drag-handle" title="Arraste para reordenar" style="cursor: grab; text-align: center; color: var(--app-text-secondary); user-select: none;">
                     <i data-lucide="grip-vertical" style="width: 18px; height: 18px;"></i>
                 </td>
                 <td>
                     <strong>${cat.nome}</strong>
                 </td>
                 <td style="text-align: center; vertical-align: middle;">
-                    <i data-lucide="${cat.icone || 'box'}" style="width: 20px; height: 20px; color: var(--gemini-primary);"></i>
+                    <i data-lucide="${cat.icone || 'box'}" style="width: 20px; height: 20px; color: var(--app-primary);"></i>
                 </td>
                 <td style="text-align: center; vertical-align: middle;">
                     <div class="badge-dropdown select-status-category ${cat.ativo ? 'badge-success' : 'badge-secondary'}" data-id="${cat.id}" tabindex="0" style="position: relative;">
@@ -441,7 +558,7 @@ async function loadCriteria() {
 
         tbody.innerHTML = '';
         if (criteria.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--gemini-text-secondary);">Nenhum critério cadastrado para esta categoria.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--app-text-secondary);">Nenhum critério cadastrado para esta categoria.</td></tr>';
             return;
         }
 
@@ -456,7 +573,7 @@ async function loadCriteria() {
                 </td>
                 <td>${crit.direcao_editavel ? 'Sim' : 'Não'}</td>
                 <td>
-                    <span style="font-size: 0.85rem; color: var(--gemini-text-secondary);">
+                    <span style="font-size: 0.85rem; color: var(--app-text-secondary);">
                         ${[crit.tooltip, crit.tooltip_min, crit.tooltip_max].filter(Boolean).join(' | ') || '-'}
                     </span>
                 </td>
@@ -504,7 +621,7 @@ async function loadAlternatives() {
 
         tbody.innerHTML = '';
         if (alternatives.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--gemini-text-secondary);">Nenhuma alternativa cadastrada para esta categoria.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--app-text-secondary);">Nenhuma alternativa cadastrada para esta categoria.</td></tr>';
             return;
         }
 
@@ -569,7 +686,7 @@ async function loadConsequencesMatrix() {
 
         if (criteria.length === 0 || alternatives.length === 0) {
             thead.innerHTML = '';
-            tbody.innerHTML = '<tr><td style="text-align: center; padding: 2rem; color: var(--gemini-text-secondary);">Cadastre critérios e alternativas antes de definir a matriz.</td></tr>';
+            tbody.innerHTML = '<tr><td style="text-align: center; padding: 2rem; color: var(--app-text-secondary);">Cadastre critérios e alternativas antes de definir a matriz.</td></tr>';
             return;
         }
 
@@ -668,7 +785,7 @@ function initActions() {
                 '<div class="admin-form-group" style="margin-bottom: 1rem; text-align: left;">' +
                 '  <label for="swal-cat-icone" style="font-weight: 600;">Ícone Selecionado</label>' +
                 '  <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">' +
-                '    <div id="swal-icon-preview" style="display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: var(--gemini-input-bg); border: 1px solid var(--gemini-border); border-radius: 12px; color: var(--gemini-primary);">' +
+                '    <div id="swal-icon-preview" style="display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: var(--app-input-bg); border: 1px solid var(--app-border); border-radius: 12px; color: var(--app-primary);">' +
                 `      <i data-lucide="${defaultIcon}" style="width: 24px; height: 24px;"></i>` +
                 '    </div>' +
                 `    <input id="swal-cat-icone" class="admin-input" style="flex: 1; min-width: 0;" value="${defaultIcon}" readonly>` +
@@ -677,7 +794,7 @@ function initActions() {
                 '    <label for="swal-icon-search" style="font-weight: 600; font-size: 0.85rem;">Buscar Ícone (em português):</label>' +
                 '    <input id="swal-icon-search" class="admin-input" style="width: 100%; box-sizing: border-box; padding: 0.5rem 0.75rem; font-size: 0.9rem;" placeholder="Ex: celular, tela, controle...">' +
                 '  </div>' +
-                '  <label style="font-weight: 600; font-size: 0.8rem; color: var(--gemini-text-secondary);">Escolha um ícone da galeria:</label>' +
+                '  <label style="font-weight: 600; font-size: 0.8rem; color: var(--app-text-secondary);">Escolha um ícone da galeria:</label>' +
                 generateIconPickerHtml(defaultIcon) +
                 '</div>',
             focusConfirm: false,
@@ -713,7 +830,7 @@ function initActions() {
                             b.style.background = 'transparent';
                         });
                         btn.classList.add('selected');
-                        btn.style.border = '2px solid var(--gemini-primary)';
+                        btn.style.border = '2px solid var(--app-primary)';
                         btn.style.background = 'rgba(138, 100, 255, 0.15)';
                         
                         const iconName = btn.getAttribute('data-icon');
@@ -747,7 +864,7 @@ function initActions() {
                     .insert([formValues]);
 
                 if (error) throw error;
-                Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Categoria criada com sucesso!' });
+                showNotification('success', 'Categoria criada com sucesso!');
                 await loadCategories();
             } catch (error) {
                 Swal.fire({ icon: 'error', title: 'Erro', text: error.message || 'Erro ao criar categoria.' });
@@ -827,7 +944,7 @@ function initActions() {
                     .insert([formValues]);
 
                 if (error) throw error;
-                Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Critério criado com sucesso!' });
+                showNotification('success', 'Critério criado com sucesso!');
                 await loadCriteria();
             } catch (error) {
                 Swal.fire({ icon: 'error', title: 'Erro', text: error.message || 'Erro ao criar critério.' });
@@ -872,7 +989,7 @@ function initActions() {
                     .insert([formValues]);
 
                 if (error) throw error;
-                Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Alternativa criada com sucesso!' });
+                showNotification('success', 'Alternativa criada com sucesso!');
                 await loadAlternatives();
             } catch (error) {
                 Swal.fire({ icon: 'error', title: 'Erro', text: error.message || 'Erro ao criar alternativa.' });
@@ -884,7 +1001,7 @@ function initActions() {
     document.getElementById('btn-save-matrix')?.addEventListener('click', async () => {
         const keys = Object.keys(unsavedConsequences);
         if (keys.length === 0) {
-            Swal.fire({ icon: 'info', title: 'Sem alterações', text: 'Não há alterações pendentes para salvar.' });
+            showNotification('info', 'Não há alterações pendentes para salvar.');
             return;
         }
 
@@ -941,7 +1058,7 @@ function initActions() {
             }
 
             unsavedConsequences = {}; // Clear track state
-            Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Matriz salva com sucesso!' });
+            showNotification('success', 'Matriz salva com sucesso!');
             await loadConsequencesMatrix();
 
         } catch (error) {
@@ -1049,7 +1166,7 @@ async function editCategory(id) {
             `<div class="admin-form-group" style="margin-bottom: 1rem; text-align: left;">` +
             `  <label for="swal-cat-icone" style="font-weight: 600;">Ícone Selecionado</label>` +
             `  <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">` +
-            `    <div id="swal-icon-preview" style="display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: var(--gemini-input-bg); border: 1px solid var(--gemini-border); border-radius: 12px; color: var(--gemini-primary);">` +
+            `    <div id="swal-icon-preview" style="display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: var(--app-input-bg); border: 1px solid var(--app-border); border-radius: 12px; color: var(--app-primary);">` +
             `      <i data-lucide="${currentIcon}" style="width: 24px; height: 24px;"></i>` +
             `    </div>` +
             `    <input id="swal-cat-icone" class="admin-input" style="flex: 1; min-width: 0;" value="${currentIcon}" readonly>` +
@@ -1058,7 +1175,7 @@ async function editCategory(id) {
             `    <label for="swal-icon-search" style="font-weight: 600; font-size: 0.85rem;">Buscar Ícone (em português):</label>` +
             `    <input id="swal-icon-search" class="admin-input" style="width: 100%; box-sizing: border-box; padding: 0.5rem 0.75rem; font-size: 0.9rem;" placeholder="Ex: celular, tela, controle...">'` +
             `  </div>` +
-            `  <label style="font-weight: 600; font-size: 0.8rem; color: var(--gemini-text-secondary);">Escolha um ícone da galeria:</label>` +
+            `  <label style="font-weight: 600; font-size: 0.8rem; color: var(--app-text-secondary);">Escolha um ícone da galeria:</label>` +
             `  ${generateIconPickerHtml(currentIcon)}` +
             `</div>`,
         focusConfirm: false,
@@ -1094,7 +1211,7 @@ async function editCategory(id) {
                         b.style.background = 'transparent';
                     });
                     btn.classList.add('selected');
-                    btn.style.border = '2px solid var(--gemini-primary)';
+                    btn.style.border = '2px solid var(--app-primary)';
                     btn.style.background = 'rgba(138, 100, 255, 0.15)';
                     
                     const iconName = btn.getAttribute('data-icon');
@@ -1129,7 +1246,7 @@ async function editCategory(id) {
                 .eq('id', id);
 
             if (error) throw error;
-            Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Categoria atualizada!' });
+            showNotification('success', 'Categoria atualizada!');
             await loadCategories();
         } catch (error) {
             Swal.fire({ icon: 'error', title: 'Erro', text: error.message });
@@ -1156,7 +1273,7 @@ async function deleteCategory(id) {
                 .eq('id', id);
 
             if (error) throw error;
-            Swal.fire({ icon: 'success', title: 'Excluído!', text: 'Categoria removida.' });
+            showNotification('success', 'Categoria removida.');
             await loadCategories();
         } catch (error) {
             Swal.fire({ icon: 'error', title: 'Erro', text: error.message });
@@ -1236,7 +1353,7 @@ async function editCriterion(id) {
                 .eq('id', id);
 
             if (error) throw error;
-            Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Critério atualizado!' });
+            showNotification('success', 'Critério atualizado!');
             await loadCriteria();
         } catch (error) {
             Swal.fire({ icon: 'error', title: 'Erro', text: error.message });
@@ -1263,7 +1380,7 @@ async function deleteCriterion(id) {
                 .eq('id', id);
 
             if (error) throw error;
-            Swal.fire({ icon: 'success', title: 'Excluído!', text: 'Critério removido.' });
+            showNotification('success', 'Critério removido.');
             await loadCriteria();
         } catch (error) {
             Swal.fire({ icon: 'error', title: 'Erro', text: error.message });
@@ -1310,7 +1427,7 @@ async function editAlternative(id) {
                 .eq('id', id);
 
             if (error) throw error;
-            Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Alternativa atualizada!' });
+            showNotification('success', 'Alternativa atualizada!');
             await loadAlternatives();
         } catch (error) {
             Swal.fire({ icon: 'error', title: 'Erro', text: error.message });
@@ -1337,7 +1454,7 @@ async function deleteAlternative(id) {
                 .eq('id', id);
 
             if (error) throw error;
-            Swal.fire({ icon: 'success', title: 'Excluído!', text: 'Alternativa removida.' });
+            showNotification('success', 'Alternativa removida.');
             await loadAlternatives();
         } catch (error) {
             Swal.fire({ icon: 'error', title: 'Erro', text: error.message });
@@ -1360,7 +1477,7 @@ async function loadUsersPermissions() {
 
         tbody.innerHTML = '';
         if (!profiles || profiles.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--gemini-text-secondary);">Nenhum usuário cadastrado.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--app-text-secondary);">Nenhum usuário cadastrado.</td></tr>';
             return;
         }
 
@@ -1428,15 +1545,7 @@ async function loadUsersPermissions() {
 
                         if (error) throw error;
                         
-                        Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Permissão atualizada com sucesso!',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
-                        });
+                        showNotification('success', 'Permissão atualizada com sucesso!');
                     } catch (error) {
                         // Revert changes in UI on error
                         if (selectedDiv) {
@@ -1468,6 +1577,67 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js')
             .then(reg => console.log('Service Worker registrado com sucesso:', reg.scope))
             .catch(err => console.error('Erro ao registrar o Service Worker:', err));
+    });
+}
+
+// ==========================================
+// PWA INSTALLATION PROMPT HANDLING
+// ==========================================
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+    // Update button visibility
+    updatePWAInstallVisibility();
+});
+
+window.addEventListener('appinstalled', (evt) => {
+    deferredPrompt = null;
+    updatePWAInstallVisibility();
+});
+
+function updatePWAInstallVisibility() {
+    const installBtn = document.getElementById('pwaInstallBtn');
+    if (!installBtn) return;
+
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    // Always show the button in browser tab mode so users can see/click it, providing fallback guidance
+    if (!isStandalone) {
+        installBtn.style.display = 'flex';
+    } else {
+        installBtn.style.display = 'none';
+    }
+}
+
+// Call immediately on script execution, on load, and on resize
+updatePWAInstallVisibility();
+window.addEventListener('load', updatePWAInstallVisibility);
+window.addEventListener('DOMContentLoaded', updatePWAInstallVisibility);
+window.addEventListener('resize', updatePWAInstallVisibility);
+
+// ==========================================
+// NOTIFICATION TOAST HELPER (TOP CENTER)
+// ==========================================
+function showNotification(icon, title) {
+    Swal.fire({
+        toast: true,
+        position: 'top',
+        icon: icon,
+        title: title,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        backdrop: false, // Ensure backdrop is disabled so clicks pass through
+        customClass: {
+            popup: 'swal-recomendator-toast'
+        },
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
     });
 }
 

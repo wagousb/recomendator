@@ -26,11 +26,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
-<body class="gemini-app">
+<body class="recomendator-app">
 
-    <div class="gemini-container">
+    <div class="recomendator-container">
         <!-- Sidebar Left -->
-        <aside class="gemini-sidebar" id="geminiSidebar">
+        <aside class="recomendator-sidebar" id="recomendatorSidebar">
             <!-- Sidebar Header -->
             <div class="sidebar-header">
                 <div class="sidebar-brand">
@@ -58,12 +58,12 @@
 
             <!-- Navigation Items (loaded dynamically) -->
             <div class="sidebar-menu" id="sidebarCategoriesContainer">
-                <div style="padding: 1rem; color: var(--gemini-text-secondary); font-size: 0.85rem;">Carregando categorias...</div>
+                <div style="padding: 1rem; color: var(--app-text-secondary); font-size: 0.85rem;">Carregando categorias...</div>
             </div>
 
             <!-- Admin Panel Link (hidden by default; shown only for admin email via JS) -->
             <div class="sidebar-admin-link-wrapper" id="adminPanelLinkWrapper" style="padding: 0 12px; margin-top: auto; margin-bottom: 8px; display: none;">
-                <a href="admin.html" class="sidebar-item" style="text-decoration: none; color: var(--gemini-primary);" title="Painel Admin">
+                <a href="admin.html" class="sidebar-item" style="text-decoration: none; color: var(--app-primary);" title="Painel Admin">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                         <line x1="9" y1="3" x2="9" y2="21"/>
@@ -92,6 +92,21 @@
 
                 <!-- settings / log out dropdown -->
                 <div class="profile-dropdown" id="profileDropdown">
+                    <a href="profile.html" class="profile-dropdown-item" style="text-decoration: none; color: var(--app-text-primary);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Configurações da Conta
+                    </a>
+                    <button id="pwaInstallBtn" class="profile-dropdown-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Instalar App
+                    </button>
                     <button onclick="fazerLogout()" class="profile-dropdown-item danger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -106,9 +121,9 @@
         </aside>
 
         <!-- Right Main View -->
-        <main class="gemini-main">
+        <main class="recomendator-main">
             <!-- Main Header Bar -->
-            <header class="gemini-header">
+            <header class="recomendator-header">
                 <div class="header-left">
                     <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Expandir/Recolher menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -128,7 +143,7 @@
                 <div class="header-right">
                     <!-- Light / Dark Mode Toggle button -->
                     <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema"
-                        style="position: static; width: 36px; height: 36px; box-shadow: none; backdrop-filter: none; background: transparent; border: none; display: flex; align-items: center; justify-content: center; color: var(--gemini-text-primary);">
+                        style="position: static; width: 36px; height: 36px; box-shadow: none; backdrop-filter: none; background: transparent; border: none; display: flex; align-items: center; justify-content: center; color: var(--app-text-primary);">
                         <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round"></svg>
@@ -137,22 +152,22 @@
             </header>
 
             <!-- Inner Layout -->
-            <div class="gemini-dashboard-layout" id="geminiDashboardLayout">
+            <div class="recomendator-dashboard-layout" id="recomendatorDashboardLayout">
                 <!-- Chat Window -->
-                <div class="gemini-chat-pane">
+                <div class="recomendator-chat-pane">
                     <div id="chat-messages">
                         <!-- Loading State -->
                         <div id="chat-loading"
-                            style="text-align: center; padding: 2rem; color: var(--gemini-text-secondary); width: 100%; margin: auto 0;">
+                            style="text-align: center; padding: 2rem; color: var(--app-text-secondary); width: 100%; margin: auto 0;">
                             <div class="skeleton skeleton-text" style="width: 60%; margin: 0 auto 1rem;"></div>
                             <div class="skeleton skeleton-item"
                                 style="height: 3.5rem; max-width: 600px; margin: 0 auto; border-radius: 16px;"></div>
                         </div>
                     </div>
 
-                    <!-- Gemini Input bar container -->
-                    <div class="gemini-input-container">
-                        <div class="gemini-input-bar">
+                    <!-- Recomendator Input bar container -->
+                    <div class="recomendator-input-container">
+                        <div class="recomendator-input-bar">
                             <!-- Prompt input field -->
                             <input type="text" id="chat-input" placeholder="Diga algo...">
 
@@ -183,13 +198,13 @@
                 </div>
 
                 <!-- Right Side Ranking Panel Drawer -->
-                <div class="gemini-ranking-pane">
+                <div class="recomendator-ranking-pane">
                     <div class="ranking-header">
                         <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px;">
                             <h3 style="margin: 0; font-size: 1.15rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Ranking em Tempo Real</h3>
                             <div style="display: flex; align-items: center; gap: 8px; margin-left: auto;">
                                 <button id="btn-toggle-hasse" class="btn btn-secondary btn-compact"
-                                    style="display: none; align-items: center; gap: 0.4rem; padding: 0.35rem 0.7rem; font-size: 0.8rem; border-color: var(--gemini-border); background: var(--gemini-input-bg); border-radius: 20px !important; margin: 0 !important; width: auto !important;">
+                                    style="display: none; align-items: center; gap: 0.4rem; padding: 0.35rem 0.7rem; font-size: 0.8rem; border-color: var(--app-border); background: var(--app-input-bg); border-radius: 20px !important; margin: 0 !important; width: auto !important;">
                                     <span id="toggle-hasse-text">Ver Hasse</span>
                                 </button>
                                 <button id="btn-close-ranking" class="hamburger-btn" style="display: none; width: 32px; height: 32px; flex-shrink: 0;" title="Fechar Ranking">
@@ -204,9 +219,9 @@
 
                     <!-- Live Ranking List -->
                     <div id="ranking-list-container" class="ranking-list-container">
-                        <div style="text-align: center; padding: 4rem 1.5rem; color: var(--gemini-text-secondary);">
+                        <div style="text-align: center; padding: 4rem 1.5rem; color: var(--app-text-secondary);">
                             <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
-                            <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--gemini-text-primary);">Nenhum
+                            <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--app-text-primary);">Nenhum
                                 Critério Selecionado</h4>
                             <p style="font-size: 0.9rem; max-width: 250px; margin: 0.5rem auto 0; line-height: 1.4;">
                                 Inicie o chat ao lado para selecionar os critérios e visualizar o ranking.</p>

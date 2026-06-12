@@ -27,7 +27,7 @@
             padding: 2rem;
             height: calc(100vh - 64px);
             overflow-y: auto;
-            color: var(--gemini-text-primary);
+            color: var(--app-text-primary);
         }
 
         .admin-header {
@@ -44,7 +44,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: linear-gradient(135deg, var(--gemini-primary) 0%, #c2e7ff 100%);
+            background: linear-gradient(135deg, var(--app-primary) 0%, #c2e7ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -53,7 +53,7 @@
             background: rgba(30, 31, 32, 0.45);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--gemini-border);
+            border: 1px solid var(--app-border);
             border-radius: 20px;
             padding: 1.75rem;
             margin-bottom: 2rem;
@@ -97,13 +97,13 @@
         .admin-form-group label {
             font-size: 0.85rem;
             font-weight: 600;
-            color: var(--gemini-text-secondary);
+            color: var(--app-text-secondary);
         }
 
         .admin-input, .admin-select {
-            background: var(--gemini-input-bg);
-            color: var(--gemini-text-primary);
-            border: 1px solid var(--gemini-border);
+            background: var(--app-input-bg);
+            color: var(--app-text-primary);
+            border: 1px solid var(--app-border);
             border-radius: 12px;
             padding: 0.75rem 1rem;
             font-family: inherit;
@@ -113,7 +113,7 @@
         }
 
         .admin-input:focus, .admin-select:focus {
-            border-color: var(--gemini-primary);
+            border-color: var(--app-primary);
             box-shadow: 0 0 0 3px rgba(168, 199, 250, 0.15);
         }
 
@@ -121,7 +121,7 @@
         .admin-table-wrapper {
             overflow-x: auto;
             border-radius: 14px;
-            border: 1px solid var(--gemini-border);
+            border: 1px solid var(--app-border);
             margin-top: 1.5rem;
         }
 
@@ -134,12 +134,12 @@
 
         .admin-table th, .admin-table td {
             padding: 1rem 1.25rem;
-            border-bottom: 1px solid var(--gemini-border);
+            border-bottom: 1px solid var(--app-border);
         }
 
         .admin-table th {
             background: rgba(0, 0, 0, 0.15);
-            color: var(--gemini-text-primary);
+            color: var(--app-text-primary);
             font-weight: 600;
         }
 
@@ -162,7 +162,7 @@
         /* Drag and Drop – Sortable states */
         .sortable-ghost {
             opacity: 0.35;
-            background: rgba(var(--gemini-primary-rgb, 138, 100, 255), 0.15) !important;
+            background: rgba(var(--app-primary-rgb, 138, 100, 255), 0.15) !important;
         }
 
         .sortable-chosen {
@@ -194,19 +194,19 @@
         }
 
         .badge-success {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22c55e;
+            background: var(--app-success-bg) !important;
+            color: var(--app-success-color) !important;
         }
 
         .badge-secondary {
-            background: rgba(148, 163, 184, 0.15);
-            color: #94a3b8;
+            background: var(--app-status-gray-bg) !important;
+            color: var(--app-status-gray-color) !important;
         }
 
         .btn-action-icon {
             background: transparent;
             border: none;
-            color: var(--gemini-text-secondary);
+            color: var(--app-text-secondary);
             cursor: pointer;
             padding: 4px;
             border-radius: 8px;
@@ -217,8 +217,8 @@
         }
 
         .btn-action-icon:hover {
-            background: var(--gemini-sidebar-hover);
-            color: var(--gemini-text-primary);
+            background: var(--app-sidebar-hover);
+            color: var(--app-text-primary);
         }
 
         .btn-danger-icon:hover {
@@ -234,7 +234,7 @@
         .matrix-table input {
             background: transparent;
             border: 1px solid transparent;
-            color: var(--gemini-text-primary);
+            color: var(--app-text-primary);
             padding: 4px 8px;
             border-radius: 6px;
             width: 80px;
@@ -245,8 +245,8 @@
         }
 
         .matrix-table input:focus {
-            background: var(--gemini-input-bg);
-            border-color: var(--gemini-primary);
+            background: var(--app-input-bg);
+            border-color: var(--app-primary);
             outline: none;
         }
 
@@ -284,9 +284,9 @@
             overflow-y: auto;
             overflow-x: hidden;
             padding: 10px;
-            border: 1px solid var(--gemini-border);
+            border: 1px solid var(--app-border);
             border-radius: 12px;
-            background: var(--gemini-input-bg);
+            background: var(--app-input-bg);
         }
 
         .icon-picker-btn {
@@ -295,7 +295,7 @@
             border-radius: 8px;
             padding: 8px;
             cursor: pointer;
-            color: var(--gemini-text-primary);
+            color: var(--app-text-primary);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -303,14 +303,14 @@
         }
 
         .icon-picker-btn:hover {
-            background: var(--gemini-sidebar-hover);
-            border-color: var(--gemini-border);
+            background: var(--app-sidebar-hover);
+            border-color: var(--app-border);
         }
 
         .icon-picker-btn.selected {
             background: rgba(138, 100, 255, 0.15);
-            border-color: var(--gemini-primary);
-            color: var(--gemini-primary);
+            border-color: var(--app-primary);
+            color: var(--app-primary);
         }
 
         /* Custom styles for badge-dropdown inside the admin tables */
@@ -386,11 +386,11 @@
     </style>
 </head>
 
-<body class="gemini-app">
+<body class="recomendator-app">
 
-    <div class="gemini-container">
+    <div class="recomendator-container">
         <!-- Sidebar Left -->
-        <aside class="gemini-sidebar" id="geminiSidebar">
+        <aside class="recomendator-sidebar" id="recomendatorSidebar">
             <!-- Sidebar Header -->
             <div class="sidebar-header">
                 <div class="sidebar-brand">
@@ -418,7 +418,7 @@
 
             <!-- Navigation Items (TABS) -->
             <div class="sidebar-menu">
-                <div class="sidebar-section-title" style="padding: 10px 14px 4px; font-size: 0.75rem; text-transform: uppercase; color: var(--gemini-text-secondary); opacity: 0.6; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                <div class="sidebar-section-title" style="padding: 10px 14px 4px; font-size: 0.75rem; text-transform: uppercase; color: var(--app-text-secondary); opacity: 0.6; font-weight: 700; display: flex; align-items: center; gap: 8px;">
                     <i data-lucide="shield-alert" style="width: 14px; height: 14px;"></i> <span class="sidebar-section-text">Painel Admin</span>
                 </div>
                 <a href="#" class="sidebar-item active" data-tab="categorias" style="text-decoration: none;">
@@ -437,7 +437,7 @@
                     <i data-lucide="table-properties" style="width: 18px; height: 18px;"></i>
                     <span class="sidebar-label">Matriz de Consequências</span>
                 </a>
-                <div class="sidebar-section-title" style="padding: 16px 14px 4px; font-size: 0.75rem; text-transform: uppercase; color: var(--gemini-text-secondary); opacity: 0.6; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                <div class="sidebar-section-title" style="padding: 16px 14px 4px; font-size: 0.75rem; text-transform: uppercase; color: var(--app-text-secondary); opacity: 0.6; font-weight: 700; display: flex; align-items: center; gap: 8px;">
                     <i data-lucide="shield" style="width: 14px; height: 14px;"></i> <span class="sidebar-section-text">Permissões</span>
                 </div>
                 <a href="#" class="sidebar-item" data-tab="permissoes" style="text-decoration: none;">
@@ -448,7 +448,7 @@
 
             <!-- Back to Chat Link (mesma posição do "Painel Admin" no chat) -->
             <div class="sidebar-admin-link-wrapper" style="padding: 0 12px; margin-top: auto; margin-bottom: 8px;">
-                <a href="chat.html" class="sidebar-item" style="text-decoration: none; color: var(--gemini-primary);" title="Voltar ao Chat">
+                <a href="chat.html" class="sidebar-item" style="text-decoration: none; color: var(--app-primary);" title="Voltar ao Chat">
                     <i data-lucide="arrow-left-to-line" style="width: 18px; height: 18px;"></i>
                     <span class="sidebar-label">Voltar ao Chat</span>
                 </a>
@@ -461,14 +461,33 @@
                     <div class="user-info">
                         <span class="user-name" id="sidebarUserName">Administrador</span>
                     </div>
+                    <button class="settings-btn" id="profileSettingsBtn" title="Opções da conta">
+                        <i data-lucide="settings" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+
+                <!-- settings / log out dropdown -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="profile.html" class="profile-dropdown-item" style="text-decoration: none; color: var(--app-text-primary);">
+                        <i data-lucide="user" style="width: 16px; height: 16px;"></i>
+                        Configurações da Conta
+                    </a>
+                    <button id="pwaInstallBtn" class="profile-dropdown-item">
+                        <i data-lucide="download" style="width: 16px; height: 16px;"></i>
+                        Instalar App
+                    </button>
+                    <button onclick="fazerLogout()" class="profile-dropdown-item danger">
+                        <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+                        Sair da conta
+                    </button>
                 </div>
             </div>
         </aside>
 
         <!-- Right Main View -->
-        <main class="gemini-main">
+        <main class="recomendator-main">
             <!-- Main Header Bar -->
-            <header class="gemini-header">
+            <header class="recomendator-header">
                 <div class="header-left">
                     <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Expandir/Recolher menu">
                         <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
@@ -483,7 +502,7 @@
                 <div class="header-right">
                     <!-- Light / Dark Mode Toggle button -->
                     <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema"
-                        style="position: static; width: 36px; height: 36px; box-shadow: none; backdrop-filter: none; background: transparent; border: none; display: flex; align-items: center; justify-content: center; color: var(--gemini-text-primary);">
+                        style="position: static; width: 36px; height: 36px; box-shadow: none; backdrop-filter: none; background: transparent; border: none; display: flex; align-items: center; justify-content: center; color: var(--app-text-primary);">
                         <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round"></svg>
@@ -497,13 +516,13 @@
                 <!-- Category Scope Selector Header (Except for Categories tab itself) -->
                 <div class="admin-card category-selector-card" id="categoryScopeSelectorCard">
                     <div class="category-selector-box">
-                        <i data-lucide="filter" style="color: var(--gemini-primary);"></i>
-                        <label for="currentCategoryScope" style="font-weight: 600; color: var(--gemini-text-secondary); margin: 0;">Categoria de Trabalho:</label>
+                        <i data-lucide="filter" style="color: var(--app-primary);"></i>
+                        <label for="currentCategoryScope" style="font-weight: 600; color: var(--app-text-secondary); margin: 0;">Categoria de Trabalho:</label>
                         <select id="currentCategoryScope" class="admin-select" style="margin-left: 8px; padding: 0.5rem 1rem;">
                             <option value="">Carregando categorias...</option>
                         </select>
                     </div>
-                    <div style="font-size: 0.85rem; color: var(--gemini-text-secondary);">
+                    <div style="font-size: 0.85rem; color: var(--app-text-secondary);">
                         As tabelas de critérios, alternativas e consequências abaixo se ajustarão a esta categoria.
                     </div>
                 </div>
@@ -520,7 +539,7 @@
                     </div>
 
                     <div class="admin-card">
-                        <p style="margin-top: 0; color: var(--gemini-text-secondary);">Gerencie as categorias de recomendação de produtos que estarão disponíveis no menu do chatbot.</p>
+                        <p style="margin-top: 0; color: var(--app-text-secondary);">Gerencie as categorias de recomendação de produtos que estarão disponíveis no menu do chatbot.</p>
                         <div class="admin-table-wrapper">
                             <table class="admin-table">
                                 <thead>
@@ -534,7 +553,7 @@
                                 </thead>
                                 <tbody id="table-body-categorias">
                                     <tr>
-                                        <td colspan="5" style="text-align: center; color: var(--gemini-text-secondary);">Carregando categorias...</td>
+                                        <td colspan="5" style="text-align: center; color: var(--app-text-secondary);">Carregando categorias...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -554,7 +573,7 @@
                     </div>
 
                     <div class="admin-card">
-                        <p style="margin-top: 0; color: var(--gemini-text-secondary);">Gerencie os critérios de tomada de decisão desta categoria. Critérios serão ponderados e avaliados pelo usuário no chat.</p>
+                        <p style="margin-top: 0; color: var(--app-text-secondary);">Gerencie os critérios de tomada de decisão desta categoria. Critérios serão ponderados e avaliados pelo usuário no chat.</p>
                         <div class="admin-table-wrapper">
                             <table class="admin-table">
                                 <thead>
@@ -568,7 +587,7 @@
                                 </thead>
                                 <tbody id="table-body-criterios">
                                     <tr>
-                                        <td colspan="5" style="text-align: center; color: var(--gemini-text-secondary);">Selecione uma categoria de trabalho acima.</td>
+                                        <td colspan="5" style="text-align: center; color: var(--app-text-secondary);">Selecione uma categoria de trabalho acima.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -588,7 +607,7 @@
                     </div>
 
                     <div class="admin-card">
-                        <p style="margin-top: 0; color: var(--gemini-text-secondary);">Gerencie as alternativas (modelos de produtos) disponíveis para recomendação nesta categoria.</p>
+                        <p style="margin-top: 0; color: var(--app-text-secondary);">Gerencie as alternativas (modelos de produtos) disponíveis para recomendação nesta categoria.</p>
                         <div class="admin-table-wrapper">
                             <table class="admin-table">
                                 <thead>
@@ -600,7 +619,7 @@
                                 </thead>
                                 <tbody id="table-body-alternativas">
                                     <tr>
-                                        <td colspan="3" style="text-align: center; color: var(--gemini-text-secondary);">Selecione uma categoria de trabalho acima.</td>
+                                        <td colspan="3" style="text-align: center; color: var(--app-text-secondary);">Selecione uma categoria de trabalho acima.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -620,7 +639,7 @@
                     </div>
 
                     <div class="admin-card">
-                        <p style="margin-top: 0; color: var(--gemini-text-secondary);">Preencha os valores de desempenho para cada alternativa nos critérios correspondentes. Insira apenas números. Células modificadas e não salvas serão sinalizadas em amarelo.</p>
+                        <p style="margin-top: 0; color: var(--app-text-secondary);">Preencha os valores de desempenho para cada alternativa nos critérios correspondentes. Insira apenas números. Células modificadas e não salvas serão sinalizadas em amarelo.</p>
                         <div class="admin-table-wrapper" style="max-height: 500px; overflow-y: auto;">
                             <table class="admin-table matrix-table">
                                 <thead id="matrix-table-head">
@@ -643,7 +662,7 @@
                     </div>
 
                     <div class="admin-card">
-                        <p style="margin-top: 0; color: var(--gemini-text-secondary);">Gerencie as permissões dos usuários do sistema. Altere o papel (role) para dar ou remover acessos de administrador.</p>
+                        <p style="margin-top: 0; color: var(--app-text-secondary);">Gerencie as permissões dos usuários do sistema. Altere o papel (role) para dar ou remover acessos de administrador.</p>
                         <div class="admin-table-wrapper">
                             <table class="admin-table">
                                 <thead>
@@ -655,7 +674,7 @@
                                 </thead>
                                 <tbody id="table-body-permissoes">
                                     <tr>
-                                        <td colspan="3" style="text-align: center; color: var(--gemini-text-secondary);">Carregando usuários...</td>
+                                        <td colspan="3" style="text-align: center; color: var(--app-text-secondary);">Carregando usuários...</td>
                                     </tr>
                                 </tbody>
                             </table>

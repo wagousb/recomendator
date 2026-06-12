@@ -7,13 +7,6 @@ const chatMessages = document.getElementById('chat-messages');
 let botQueue = [];
 let isTyping = false;
 
-// Global PWA installation prompt stash
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-});
-
 
 
 let chatState = {
@@ -97,8 +90,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (!session) {
+        const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+        
+        let isValid = !!session;
+        if (session) {
+            const now = Math.floor(Date.now() / 1000);
+            if (session.expires_at && session.expires_at <= now) {
+                try {
+                    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+                    if (userError || !user) {
+                        isValid = false;
+                    }
+                } catch (e) {
+                    isValid = false;
+                }
+            }
+        }
+
+        if (sessionError || !isValid) {
+            try {
+                await supabaseClient.auth.signOut();
+            } catch (e) {}
             window.location.href = 'login.html';
             return;
         }
@@ -154,7 +166,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         
         // Bind sidebar toggle interactions
-        const geminiSidebar = document.getElementById('geminiSidebar');
+        const recomendatorSidebar = document.getElementById('recomendatorSidebar');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const sidebarCollapseBtn = document.getElementById('sidebarCollapseBtn');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -162,7 +174,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const sidebarBrand = document.querySelector('.sidebar-brand');
         
         const updateSidebarTooltip = () => {
-            const isCollapsed = geminiSidebar && geminiSidebar.classList.contains('collapsed');
+            const isCollapsed = recomendatorSidebar && recomendatorSidebar.classList.contains('collapsed');
             if (sidebarCollapseBtn) {
                 sidebarCollapseBtn.setAttribute('title', isCollapsed ? 'Expandir menu' : 'Recolher menu');
             }
@@ -173,10 +185,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const toggleSidebar = () => {
             if (window.innerWidth <= 900) {
-                geminiSidebar.classList.toggle('expanded');
+                recomendatorSidebar.classList.toggle('expanded');
                 sidebarOverlay.classList.toggle('show');
             } else {
-                geminiSidebar.classList.toggle('collapsed');
+                recomendatorSidebar.classList.toggle('collapsed');
             }
             updateSidebarTooltip();
         };
@@ -185,11 +197,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (sidebarCollapseBtn) sidebarCollapseBtn.onclick = toggleSidebar;
         if (sidebarOverlay) sidebarOverlay.onclick = toggleSidebar;
         
+        const headerBrand = document.querySelector('.header-brand');
         if (sidebarBrand) {
-            sidebarBrand.onclick = () => {
-                if (geminiSidebar && geminiSidebar.classList.contains('collapsed')) {
-                    toggleSidebar();
+            sidebarBrand.onclick = (e) => {
+                e.preventDefault();
+                if (recomendatorSidebar && recomendatorSidebar.classList.contains('collapsed')) {
+                    if (sidebarCollapseBtn) {
+                        sidebarCollapseBtn.click();
+                    } else {
+                        toggleSidebar();
+                    }
+                } else {
+                    window.location.href = 'chat.html';
                 }
+            };
+        }
+        if (headerBrand) {
+            headerBrand.onclick = (e) => {
+                e.preventDefault();
+                window.location.href = 'chat.html';
             };
         }
         
@@ -201,12 +227,90 @@ document.addEventListener('DOMContentLoaded', async () => {
         const profileDropdown = document.getElementById('profileDropdown');
         if (userProfileBtn && profileDropdown) {
             userProfileBtn.onclick = (e) => {
+                if (typeof updatePWAInstallVisibility === 'function') {
+                    updatePWAInstallVisibility();
+                }
                 profileDropdown.classList.toggle('show');
                 e.stopPropagation();
             };
             document.addEventListener('click', () => {
                 profileDropdown.classList.remove('show');
             });
+        }
+
+        const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+        if (pwaInstallBtn) {
+            pwaInstallBtn.onclick = async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                profileDropdown.classList.remove('show');
+                
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                const isLocalFile = window.location.protocol === 'file:';
+                
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(`User response to the install prompt: ${outcome}`);
+                    deferredPrompt = null;
+                    if (typeof updatePWAInstallVisibility === 'function') {
+                        updatePWAInstallVisibility();
+                    }
+                } else if (isLocalFile) {
+                    Swal.fire({
+                        title: 'Servidor Local Necessário',
+                        html: `
+                            <div style="text-align: left; font-size: 0.95rem; line-height: 1.6; color: var(--app-text-primary);">
+                                <p>Instalação de PWA não é suportada rodando como arquivo local (<code>file://</code>).</p>
+                                <p style="margin-top: 10px; color: var(--app-text-secondary);">Para poder instalar o <strong>Recomendator</strong>:</p>
+                                <ol style="padding-left: 1.2rem; margin: 10px 0; color: var(--app-text-secondary);">
+                                    <li style="margin-bottom: 8px;">Execute o app sob um servidor local (ex: usando a extensão <strong>Live Server</strong> do VS Code, ou rodando <code>npx serve</code> no terminal).</li>
+                                    <li>Acesse através de <code>http://localhost</code> ou uma URL segura (<code>https://</code>).</li>
+                                </ol>
+                            </div>
+                        `,
+                        icon: 'warning',
+                        confirmButtonText: 'Entendi',
+                        customClass: { popup: 'swal-recomendator' }
+                    });
+                } else if (isIOS) {
+                    // Show custom installation instructions for iOS/Safari
+                    Swal.fire({
+                        title: 'Instalar Aplicativo',
+                        html: `
+                            <div style="text-align: left; font-size: 0.95rem; line-height: 1.6; color: var(--app-text-primary);">
+                                <p>Para instalar o <strong>Recomendator</strong> no seu iPhone ou iPad:</p>
+                                <ol style="padding-left: 1.2rem; margin: 10px 0; color: var(--app-text-secondary);">
+                                    <li style="margin-bottom: 8px;">Toque no ícone de <strong>Compartilhar</strong> <span style="font-size: 1.2rem; vertical-align: middle;">📤</span> na barra inferior do Safari.</li>
+                                    <li style="margin-bottom: 8px;">Role a lista de opções para baixo e selecione <strong>Adicionar à Tela de Início</strong> <span style="font-size: 1.2rem; vertical-align: middle;">➕</span>.</li>
+                                    <li>Confirme clicando em <strong>Adicionar</strong> no canto superior direito.</li>
+                                </ol>
+                            </div>
+                        `,
+                        icon: 'info',
+                        confirmButtonText: 'Entendi',
+                        customClass: { popup: 'swal-recomendator' }
+                    });
+                } else {
+                    // Generic fallback (Incognito mode or unsupported desktop browser)
+                    Swal.fire({
+                        title: 'Como Instalar',
+                        html: `
+                            <div style="text-align: left; font-size: 0.95rem; line-height: 1.6; color: var(--app-text-primary);">
+                                <p>Se o prompt de instalação não apareceu automaticamente, certifique-se de que:</p>
+                                <ul style="padding-left: 1.2rem; margin: 10px 0; color: var(--app-text-secondary);">
+                                    <li style="margin-bottom: 8px;">Você <strong>não</strong> está em uma guia de <strong>Navegação Anônima</strong> (elas desativam a instalação de aplicativos).</li>
+                                    <li style="margin-bottom: 8px;">No canto direito da barra de endereços (URL) do seu navegador, clique no ícone de instalação <span style="font-size: 1.25rem;">🖥️</span> ou <span style="font-size: 1.25rem;">⊕</span>.</li>
+                                    <li>Ou clique no menu do navegador (três pontos) e selecione a opção <strong>"Instalar Recomendator..."</strong>.</li>
+                                </ul>
+                            </div>
+                        `,
+                        icon: 'info',
+                        confirmButtonText: 'Entendi',
+                        customClass: { popup: 'swal-recomendator' }
+                    });
+                }
+            };
         }
         
         // Bind Mode Switchers dynamically
@@ -231,7 +335,7 @@ function triggerResetChat(categoryId, categoryName) {
         showCancelButton: true,
         confirmButtonText: 'Sim, reiniciar',
         cancelButtonText: 'Cancelar',
-        customClass: { popup: 'swal-gemini' },
+        customClass: { popup: 'swal-recomendator' },
         buttonsStyling: true
     }).then(async (result) => {
         if (result.isConfirmed) {
@@ -319,7 +423,7 @@ const inputToggleRanking = document.getElementById('input-toggle-ranking');
 const btnCloseRanking = document.getElementById('btn-close-ranking');
 
 function toggleRankingPane() {
-    const layout = document.querySelector('.gemini-dashboard-layout') || document.querySelector('.dashboard-layout');
+    const layout = document.querySelector('.recomendator-dashboard-layout') || document.querySelector('.dashboard-layout');
     if (!layout) return;
     
     const isShown = layout.classList.toggle('show-ranking');
@@ -368,7 +472,7 @@ if (inputToggleRanking) {
 }
 if (btnCloseRanking) {
     btnCloseRanking.onclick = () => {
-        const layout = document.querySelector('.gemini-dashboard-layout') || document.querySelector('.dashboard-layout');
+        const layout = document.querySelector('.recomendator-dashboard-layout') || document.querySelector('.dashboard-layout');
         if (layout && layout.classList.contains('show-ranking')) {
             toggleRankingPane();
         }
@@ -423,7 +527,7 @@ async function initSidebarCategories() {
         categories = applySavedCategoryOrder(catData || []);
 
         if (categories.length === 0) {
-            container.innerHTML = '<div style="padding: 1rem; color: var(--gemini-text-secondary); font-size: 0.85rem;">Nenhuma categoria encontrada.</div>';
+            container.innerHTML = '<div style="padding: 1rem; color: var(--app-text-secondary); font-size: 0.85rem;">Nenhuma categoria encontrada.</div>';
             return;
         }
 
@@ -485,6 +589,37 @@ async function initSidebarCategories() {
                 clearChat();
                 showRankingSkeleton();
                 await loadInitialData();
+            });
+
+            // Mobile long press (press and hold) detection
+            let touchTimer = null;
+            let longPressTriggered = false;
+
+            item.addEventListener('touchstart', (e) => {
+                longPressTriggered = false;
+                touchTimer = setTimeout(() => {
+                    longPressTriggered = true;
+                    // Trigger reset confirmation directly
+                    triggerResetChat(cat.id, cat.nome);
+                }, 600); // 600ms hold
+            }, { passive: true });
+
+            item.addEventListener('touchmove', () => {
+                if (touchTimer) {
+                    clearTimeout(touchTimer);
+                    touchTimer = null;
+                }
+            }, { passive: true });
+
+            item.addEventListener('touchend', (e) => {
+                if (touchTimer) {
+                    clearTimeout(touchTimer);
+                    touchTimer = null;
+                }
+                if (longPressTriggered) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
             });
 
             // Bind click to reset button
@@ -917,7 +1052,7 @@ function deactivateLastBotMessageOptions() {
     });
     
     // Disable clickable card/reply elements
-    lastBotMsg.querySelectorAll('.gemini-welcome-card, .quick-reply-btn, .badge-dropdown, .badge-option').forEach(el => {
+    lastBotMsg.querySelectorAll('.recomendator-welcome-card, .quick-reply-btn, .badge-dropdown, .badge-option').forEach(el => {
         el.removeAttribute('onclick');
         el.style.pointerEvents = 'none';
         el.style.opacity = '0.5';
@@ -942,7 +1077,7 @@ function deactivateLastBotMessageOptions() {
         const updateDb = () => {
             const msgId = lastBotMsg.dataset.messageId;
             if (msgId) {
-                const richContainer = lastBotMsg.querySelector('.quick-replies, .gemini-welcome-container, .chat-interactive-card');
+                const richContainer = lastBotMsg.querySelector('.quick-replies, .recomendator-welcome-container, .chat-interactive-card');
                 if (richContainer) {
                     const origText = richContainer.dataset.originalText || lastBotMsg.querySelector('.message-bubble').innerText;
                     const updatedHtml = richContainer.outerHTML;
@@ -1131,7 +1266,7 @@ function removeLastInteractiveBotMessage() {
     const allBotMsgs = chatMessages.querySelectorAll('.message.bot');
     if (allBotMsgs.length === 0) return;
     const lastBot = allBotMsgs[allBotMsgs.length - 1];
-    if (lastBot.querySelector('.quick-replies, .chat-interactive-card, .gemini-welcome-container')) {
+    if (lastBot.querySelector('.quick-replies, .chat-interactive-card, .recomendator-welcome-container')) {
         lastBot.remove();
     }
 }
@@ -1273,7 +1408,7 @@ function createMessageElement(sender, text, createdAt, msgId = null) {
                 el.style.pointerEvents = 'none';
                 el.style.opacity = '0.6';
             });
-            richDiv.querySelectorAll('.gemini-welcome-card, .quick-reply-btn, .badge-dropdown, .badge-option, .criteria-row-item').forEach(el => {
+            richDiv.querySelectorAll('.recomendator-welcome-card, .quick-reply-btn, .badge-dropdown, .badge-option, .criteria-row-item').forEach(el => {
                 el.removeAttribute('onclick');
                 el.style.pointerEvents = 'none';
                 el.style.opacity = '0.6';
@@ -1414,19 +1549,19 @@ async function startWelcome(clear = false) {
         welcomeIcon = '🎮';
     }
     
-    // In Gemini mode, if starting empty, display a beautiful dashboard greeting.
+    // In Recomendator mode, if starting empty, display a beautiful dashboard greeting.
     // Otherwise, append welcome message bubbles normally.
     const messageCount = chatMessages.querySelectorAll('.message').length;
     const { step1Done, step2Done, step3Done } = getStepsCompletion();
     
     if (messageCount === 0) {
         const welcomeDiv = document.createElement('div');
-        welcomeDiv.className = 'gemini-welcome-container';
+        welcomeDiv.className = 'recomendator-welcome-container';
         welcomeDiv.innerHTML = `
-            <h1 class="gemini-welcome-title">Vamos encontrar o ideal?</h1>
-            <p class="gemini-welcome-subtitle">Olá! Sou o assistente inteligente do Recomendator 🦆. Estou aqui para te ajudar a escolher o melhor **${catName.toLowerCase()}** de forma simples, justa e totalmente personalizada. Por onde começamos?</p>
-            <div class="gemini-welcome-cards">
-                <div class="gemini-welcome-card ${step1Done ? 'step-done' : ''}" onclick="selectMenuOption(1)">
+            <h1 class="recomendator-welcome-title">Vamos encontrar o ideal?</h1>
+            <p class="recomendator-welcome-subtitle">Olá! Sou o assistente inteligente do Recomendator 🦆. Estou aqui para te ajudar a escolher o melhor **${catName.toLowerCase()}** de forma simples, justa e totalmente personalizada. Por onde começamos?</p>
+            <div class="recomendator-welcome-cards">
+                <div class="recomendator-welcome-card ${step1Done ? 'step-done' : ''}" onclick="selectMenuOption(1)">
                     <div class="card-icon">${welcomeIcon}</div>
                     <div>
                         <div class="card-title">1 - O que você valoriza?</div>
@@ -1434,7 +1569,7 @@ async function startWelcome(clear = false) {
                         ${step1Done ? '<div class="step-done-badge">Concluído</div>' : ''}
                     </div>
                 </div>
-                <div class="gemini-welcome-card ${step2Done ? 'step-done' : ''}" onclick="selectMenuOption(2)">
+                <div class="recomendator-welcome-card ${step2Done ? 'step-done' : ''}" onclick="selectMenuOption(2)">
                     <div class="card-icon">🎯</div>
                     <div>
                         <div class="card-title">2 - Definir seus limites</div>
@@ -1442,7 +1577,7 @@ async function startWelcome(clear = false) {
                         ${step2Done ? '<div class="step-done-badge">Concluído</div>' : ''}
                     </div>
                 </div>
-                <div class="gemini-welcome-card ${step3Done ? 'step-done' : ''}" onclick="selectMenuOption(3)">
+                <div class="recomendator-welcome-card ${step3Done ? 'step-done' : ''}" onclick="selectMenuOption(3)">
                     <div class="card-icon">⚖️</div>
                     <div>
                         <div class="card-title">3 - Comparar e decidir</div>
@@ -1505,7 +1640,7 @@ async function startChooseCriteria() {
     headerSelect.style.marginBottom = '0.75rem';
     headerSelect.innerHTML = `
         <label style="display: flex; align-items: center; cursor: pointer; font-weight: 600; font-size: 0.85rem; padding: 0.4rem 0.8rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px;">
-            <input type="checkbox" id="chatSelectAll" style="margin-right: 0.5rem; accent-color: var(--primary-color);">
+            <input type="checkbox" id="chatSelectAll" style="margin-right: 0.5rem; accent-color: var(--app-primary);">
             Selecionar Todos os Critérios
         </label>
     `;
@@ -2586,7 +2721,7 @@ function buildHasseLevels() {
 function showChatSkeleton() {
     if (chatMessages) {
         chatMessages.innerHTML = `
-            <div id="chat-loading" style="text-align: center; padding: 2rem; color: var(--gemini-text-secondary); width: 100%; margin: auto 0;">
+            <div id="chat-loading" style="text-align: center; padding: 2rem; color: var(--app-text-secondary); width: 100%; margin: auto 0;">
                 <div class="skeleton skeleton-text" style="width: 60%; margin: 0 auto 1rem;"></div>
                 <div class="skeleton skeleton-item" style="height: 3.5rem; max-width: 600px; margin: 0 auto; border-radius: 16px;"></div>
             </div>
@@ -2889,7 +3024,7 @@ Pronto! O Recomendator 🦆 estará instalado e disponível na sua tela de iníc
 
     if (requestsRanking) {
         addMessage('user', text);
-        const layout = document.querySelector('.gemini-dashboard-layout') || document.querySelector('.dashboard-layout');
+        const layout = document.querySelector('.recomendator-dashboard-layout') || document.querySelector('.dashboard-layout');
         if (layout) {
             if (!layout.classList.contains('show-ranking')) {
                 toggleRankingPane();
@@ -3005,4 +3140,42 @@ if ('serviceWorker' in navigator) {
             .catch(err => console.error('Erro ao registrar o Service Worker:', err));
     });
 }
+
+// ==========================================
+// PWA INSTALLATION PROMPT HANDLING
+// ==========================================
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+    // Update button visibility
+    updatePWAInstallVisibility();
+});
+
+window.addEventListener('appinstalled', (evt) => {
+    deferredPrompt = null;
+    updatePWAInstallVisibility();
+});
+
+function updatePWAInstallVisibility() {
+    const installBtn = document.getElementById('pwaInstallBtn');
+    if (!installBtn) return;
+
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    // Always show the button in browser tab mode so users can see/click it, providing fallback guidance
+    if (!isStandalone) {
+        installBtn.style.display = 'flex';
+    } else {
+        installBtn.style.display = 'none';
+    }
+}
+
+// Call immediately on script execution, on load, and on resize
+updatePWAInstallVisibility();
+window.addEventListener('load', updatePWAInstallVisibility);
+window.addEventListener('DOMContentLoaded', updatePWAInstallVisibility);
+window.addEventListener('resize', updatePWAInstallVisibility);
 

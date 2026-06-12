@@ -14,6 +14,30 @@
   --input-bg: rgba(15, 23, 42, 0.6);
   --blob-1: #3b82f6;
   --blob-2: #3b82f6;
+
+  /* Recomendator design tokens */
+  --app-bg: #131314;
+  --app-sidebar-bg: #1e1f20;
+  --app-sidebar-hover: #2e2f30;
+  --app-sidebar-active: #3c4043;
+  --app-input-bg: #1e1f20;
+  --app-text-primary: #e3e3e3;
+  --app-text-secondary: #c4c7c5;
+  --app-border: #2e2f30;
+  --app-primary: #a8c7fa;
+  --app-primary-hover: #c2e7ff;
+  --app-primary-selected-bg: rgba(168, 199, 250, 0.08);
+  --app-primary-hover-border: rgba(168, 199, 250, 0.35);
+  --app-success-bg: rgba(52, 211, 153, 0.12);
+  --app-success-color: #6ee7b7;
+  --app-success-border: rgba(52, 211, 153, 0.25);
+  --app-danger-bg: rgba(248, 113, 113, 0.12);
+  --app-danger-color: #fca5a5;
+  --app-danger-border: rgba(248, 113, 113, 0.25);
+  --app-status-gray-bg: rgba(148, 163, 184, 0.12);
+  --app-status-gray-color: #94a3b8;
+  --app-status-gray-border: rgba(148, 163, 184, 0.25);
+  --brand-duck-color: #fde047;
 }
 
 [data-theme="light"] {
@@ -30,6 +54,30 @@
   --input-bg: rgba(255, 255, 255, 0.8);
   --blob-1: #93c5fd;
   --blob-2: #93c5fd;
+
+  /* Recomendator design tokens - Light Mode */
+  --app-bg: #ffffff;
+  --app-sidebar-bg: #f0f4f9;
+  --app-sidebar-hover: #e1e9f1;
+  --app-sidebar-active: #d3e3fd;
+  --app-input-bg: #f0f4f9;
+  --app-text-primary: #1f1f1f;
+  --app-text-secondary: #474747;
+  --app-border: #e3e3e3;
+  --app-primary: #0b57d0;
+  --app-primary-hover: #0842a0;
+  --app-primary-selected-bg: rgba(11, 87, 208, 0.08);
+  --app-primary-hover-border: rgba(11, 87, 208, 0.35);
+  --app-success-bg: rgba(25, 135, 84, 0.08);
+  --app-success-color: #198754;
+  --app-success-border: rgba(25, 135, 84, 0.2);
+  --app-danger-bg: rgba(220, 53, 69, 0.08);
+  --app-danger-color: #dc3545;
+  --app-danger-border: rgba(220, 53, 69, 0.2);
+  --app-status-gray-bg: rgba(108, 117, 125, 0.08);
+  --app-status-gray-color: #6c757d;
+  --app-status-gray-border: rgba(108, 117, 125, 0.2);
+  --brand-duck-color: #eab308;
 }
 
 * {
@@ -41,8 +89,8 @@
 body {
   font-family: 'Outfit', sans-serif;
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--bg-color-start) 0%, var(--bg-color-end) 100%);
-  color: var(--text-primary);
+  background: var(--app-bg);
+  color: var(--app-text-primary);
   display: flex;
   align-items: center;
   overflow-x: hidden;
@@ -51,6 +99,7 @@ body {
 
 /* Background Animated Blobs for extra premium feel */
 .bg-blobs {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -94,15 +143,13 @@ body {
   margin: auto;
 }
 
-/* Glassmorphism Card */
+/* Glassmorphism Card (updated to solid flat Recomendator Card) */
 .glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
+  background: var(--app-sidebar-bg);
+  border: 1px solid var(--app-border);
   border-radius: 24px;
-  padding: 1.75rem 1.5rem;
-  box-shadow: var(--glass-shadow);
+  padding: 2.25rem 2rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
   text-align: center;
   animation: slideUp 0.6s ease-out;
 }
@@ -111,15 +158,16 @@ body {
   font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 0.35rem;
-  background: linear-gradient(to right, var(--primary-hover), var(--primary-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  color: var(--app-text-primary);
 }
 
 .glass-card p {
-  color: var(--text-secondary);
+  color: var(--app-text-secondary);
   font-size: 0.9rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   line-height: 1.45;
 }
 
@@ -133,31 +181,31 @@ body {
   display: block;
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--app-text-secondary);
   margin-bottom: 0.3rem;
 }
 
 .form-group input, .form-group select, .chart-controls select {
   width: 100%;
-  padding: 0.65rem 0.9rem;
-  background: var(--input-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  color: var(--text-primary);
-  font-size: 0.92rem;
+  padding: 0.75rem 1rem;
+  background: var(--app-bg);
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  color: var(--app-text-primary);
+  font-size: 0.95rem;
   font-family: 'Outfit', sans-serif;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   outline: none;
 }
 
 .form-group input:focus, .form-group select:focus, .chart-controls select:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 3px rgba(168, 199, 250, 0.25);
 }
 
 option {
-    background-color: var(--bg-color);
-    color: var(--text-primary);
+    background-color: var(--app-bg);
+    color: var(--app-text-primary);
 }
 
 /* Buttons */
@@ -166,35 +214,45 @@ option {
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 0.65rem 1.5rem;
+  padding: 0.75rem 1.75rem;
   font-size: 0.95rem;
   font-weight: 600;
   font-family: 'Outfit', sans-serif;
-  border-radius: 12px;
+  border-radius: 24px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   border: none;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-  color: white;
+  background: var(--app-primary);
+  color: var(--app-bg);
 }
 
 .btn-primary:hover {
-  filter: brightness(0.95);
+  background: var(--app-primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--glass-border);
+  color: var(--app-text-primary);
+  border: 1px solid var(--app-border);
   margin-top: 0.5rem;
 }
 
 .btn-secondary:hover {
-  background: var(--glass-bg);
-  border-color: var(--primary-color);
+  background: var(--app-sidebar-hover);
+  border-color: var(--app-primary);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
 }
 
 /* Divider for OAuth options */
@@ -202,8 +260,8 @@ option {
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 0.75rem 0;
-  color: var(--text-secondary);
+  margin: 1rem 0;
+  color: var(--app-text-secondary);
   font-size: 0.8rem;
 }
 
@@ -211,7 +269,7 @@ option {
 .divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--app-border);
 }
 
 .divider:not(:empty)::before {
@@ -223,39 +281,48 @@ option {
 }
 
 .btn-google {
-  background: var(--input-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--glass-border);
+  background: var(--app-bg);
+  color: var(--app-text-primary);
+  border: 1px solid var(--app-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   margin-top: 0.5rem;
 }
 
 .btn-google:hover {
-  background: var(--glass-bg);
-  border-color: var(--text-primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--app-sidebar-hover);
+  border-color: var(--app-primary);
+  transform: translateY(-1px);
+}
+
+.btn-google:active {
+  transform: translateY(0);
 }
 
 /* Links */
 .footer-link {
   display: block;
   margin-top: 0.75rem;
-  color: var(--text-secondary);
+  color: var(--app-text-secondary);
   text-decoration: none;
   font-size: 0.85rem;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 .footer-link span {
-  color: var(--primary-color);
+  color: var(--app-primary);
   font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.footer-link span:hover {
+  color: var(--app-primary-hover);
 }
 
 .footer-link:hover {
-  color: var(--text-primary);
+  color: var(--app-text-primary);
 }
 
 /* Animations */
@@ -301,9 +368,9 @@ option {
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  color: var(--text-primary);
+  background: var(--app-sidebar-bg);
+  border: 1px solid var(--app-border);
+  color: var(--app-text-primary);
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -312,15 +379,14 @@ option {
   align-items: center;
   cursor: pointer;
   z-index: 100;
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
 .theme-toggle:hover {
   transform: scale(1.1) rotate(15deg);
-  background: var(--glass-border);
+  background: var(--app-sidebar-hover);
+  border-color: var(--app-primary);
 }
 
 /* Dashboard List */
@@ -416,7 +482,7 @@ option {
   width: 1.25rem;
   height: 1.25rem;
   cursor: pointer;
-  accent-color: var(--primary-color);
+  accent-color: var(--app-primary);
 }
 
 .criteria-body {
@@ -436,15 +502,15 @@ option {
 }
 
 .badge-min {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: var(--app-danger-bg);
+  color: var(--app-danger-color);
+  border: 1px solid var(--app-danger-border);
 }
 
 .badge-max {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: var(--app-success-bg);
+  color: var(--app-success-color);
+  border: 1px solid var(--app-success-border);
 }
 
 /* Custom Badge Dropdown (Replaces Native Select) */
@@ -470,15 +536,15 @@ option {
 }
 
 .badge-dropdown.badge-min {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background-color: var(--app-danger-bg);
+  color: var(--app-danger-color);
+  border: 1px solid var(--app-danger-border);
 }
 
 .badge-dropdown.badge-max {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background-color: var(--app-success-bg);
+  color: var(--app-success-color);
+  border: 1px solid var(--app-success-border);
 }
 
 .badge-dropdown-selected {
@@ -615,8 +681,8 @@ option {
   }
 
   .glass-card {
-    padding: 1.5rem 1rem;
-    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
   }
 
   .header h1 {
@@ -1005,10 +1071,10 @@ option {
 }
 
 .quick-reply-btn:hover {
-  border-color: var(--primary-color);
-  background: rgba(59, 130, 246, 0.08);
+  border-color: var(--app-primary);
+  background: var(--app-primary-selected-bg);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12);
+  box-shadow: 0 4px 12px var(--app-primary-selected-bg);
 }
 
 .quick-replies-horizontal .quick-reply-btn {
@@ -1035,8 +1101,8 @@ option {
 }
 
 .chat-input-area:focus-within {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 3px var(--app-primary-selected-bg);
 }
 
 .chat-input-area input {
@@ -1157,14 +1223,14 @@ option {
 }
 
 .criteria-row-item:hover {
-  border-color: rgba(59, 130, 246, 0.35);
+  border-color: var(--app-primary-hover-border);
   background: var(--glass-bg);
 }
 
 .criteria-row-item.selected,
 .criteria-row-item:has(input[type="checkbox"]:checked) {
-  border-color: var(--primary-color);
-  background: rgba(59, 130, 246, 0.05);
+  border-color: var(--app-primary);
+  background: var(--app-primary-selected-bg);
 }
 
 .criteria-row-item label {
@@ -1182,7 +1248,7 @@ option {
 
 .criteria-row-item label input[type="checkbox"] {
   cursor: pointer;
-  accent-color: var(--primary-color);
+  accent-color: var(--app-primary);
   width: 0.9rem;
   height: 0.9rem;
   flex-shrink: 0;
@@ -1216,6 +1282,11 @@ option {
   height: 22px;
 }
 
+/* Allow options dropdown list to overflow container boundary when dropdown is open */
+.criteria-row-item .badge-dropdown.open {
+  overflow: visible !important;
+}
+
 /* Collapsed editable state: pill with arrow and tiny down caret */
 .criteria-row-item .badge-dropdown:not(.readonly) {
   max-width: 32px;
@@ -1235,6 +1306,7 @@ option {
   border-radius: 50%;
   padding: 0;
   background-image: none;
+  cursor: default;
 }
 
 .criteria-row-item .badge-dropdown-selected {
@@ -1270,12 +1342,22 @@ option {
   background-size: 7px;
 }
 
-.criteria-row-item .badge-dropdown:not(.readonly):hover .badge-dropdown-selected {
+/* Readonly Hover State: Expand and Show text without caret */
+.criteria-row-item .badge-dropdown.readonly:hover {
+  max-width: 100px;
+  width: auto;
+  border-radius: 10px;
+  padding: 0.2rem 0.5rem;
+  background-image: none;
+}
+
+/* When hovered, show internal text */
+.criteria-row-item .badge-dropdown:hover .badge-dropdown-selected {
   font-size: 0.58rem !important; /* Smaller font for optimized spacing */
   letter-spacing: -0.2px;
 }
 
-.criteria-row-item .badge-dropdown:not(.readonly):hover .badge-dropdown-selected::after {
+.criteria-row-item .badge-dropdown:hover .badge-dropdown-selected::after {
   content: ""; /* Hide extra Arrow, text has it */
 }
 
@@ -1336,24 +1418,24 @@ option {
 }
 
 /* ==========================================================================
-   GEMINI-LIKE THEME SYSTEM
+   RECOMENDATOR-LIKE THEME SYSTEM
    ========================================================================== */
 
-body.gemini-app {
-  --gemini-bg: #131314;
-  --gemini-sidebar-bg: #1e1f20;
-  --gemini-sidebar-hover: #2e2f30;
-  --gemini-sidebar-active: #3c4043;
-  --gemini-input-bg: #1e1f20;
-  --gemini-text-primary: #e3e3e3;
-  --gemini-text-secondary: #c4c7c5;
-  --gemini-border: #2e2f30;
-  --gemini-primary: #a8c7fa;
-  --gemini-primary-hover: #c2e7ff;
+body.recomendator-app {
+  --app-bg: #131314;
+  --app-sidebar-bg: #1e1f20;
+  --app-sidebar-hover: #2e2f30;
+  --app-sidebar-active: #3c4043;
+  --app-input-bg: #1e1f20;
+  --app-text-primary: #e3e3e3;
+  --app-text-secondary: #c4c7c5;
+  --app-border: #2e2f30;
+  --app-primary: #a8c7fa;
+  --app-primary-hover: #c2e7ff;
   --brand-duck-color: #fde047; /* Lighter bright yellow for dark mode */
   
-  background: var(--gemini-bg) !important;
-  color: var(--gemini-text-primary) !important;
+  background: var(--app-bg) !important;
+  color: var(--app-text-primary) !important;
   font-family: 'Outfit', 'Inter', sans-serif;
   display: flex !important;
   flex-direction: row !important;
@@ -1366,22 +1448,22 @@ body.gemini-app {
   align-items: stretch !important;
 }
 
-[data-theme="light"] body.gemini-app {
-  --gemini-bg: #ffffff;
-  --gemini-sidebar-bg: #f0f4f9;
-  --gemini-sidebar-hover: #e1e9f1;
-  --gemini-sidebar-active: #d3e3fd;
-  --gemini-input-bg: #f0f4f9;
-  --gemini-text-primary: #1f1f1f;
-  --gemini-text-secondary: #474747;
-  --gemini-border: #e3e3e3;
-  --gemini-primary: #0b57d0;
-  --gemini-primary-hover: #0842a0;
+[data-theme="light"] body.recomendator-app {
+  --app-bg: #ffffff;
+  --app-sidebar-bg: #f0f4f9;
+  --app-sidebar-hover: #e1e9f1;
+  --app-sidebar-active: #d3e3fd;
+  --app-input-bg: #f0f4f9;
+  --app-text-primary: #1f1f1f;
+  --app-text-secondary: #474747;
+  --app-border: #e3e3e3;
+  --app-primary: #0b57d0;
+  --app-primary-hover: #0842a0;
   --brand-duck-color: #eab308; /* Warmer bright yellow for light mode */
 }
 
-/* Gemini Container Wrapper */
-.gemini-container {
+/* Recomendator Container Wrapper */
+.recomendator-container {
   display: flex;
   width: 100%;
   height: 100vh;
@@ -1390,20 +1472,20 @@ body.gemini-app {
 }
 
 /* Left Sidebar */
-.gemini-sidebar {
+.recomendator-sidebar {
   width: 280px;
-  background-color: var(--gemini-sidebar-bg);
+  background-color: var(--app-sidebar-bg);
   display: flex;
   flex-direction: column;
   height: 100vh;
   flex-shrink: 0;
   transition: width 0.3s cubic-bezier(0.2, 0, 0, 1);
   z-index: 10;
-  border-right: 1px solid var(--gemini-border);
+  border-right: 1px solid var(--app-border);
   position: relative;
 }
 
-.gemini-sidebar.collapsed {
+.recomendator-sidebar.collapsed {
   width: 68px;
 }
 
@@ -1420,7 +1502,7 @@ body.gemini-app {
 .hamburger-btn {
   background: transparent;
   border: none;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   cursor: pointer;
   width: 36px;
   height: 36px;
@@ -1432,7 +1514,7 @@ body.gemini-app {
 }
 
 .hamburger-btn:hover {
-  background: var(--gemini-sidebar-hover);
+  background: var(--app-sidebar-hover);
 }
 
 .sidebar-brand {
@@ -1441,12 +1523,13 @@ body.gemini-app {
   gap: 8px;
   font-weight: 500;
   font-size: 1.25rem;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   flex-grow: 1;
   user-select: none;
+  cursor: pointer;
 }
 
 .sidebar-brand-star {
@@ -1493,12 +1576,12 @@ body.gemini-app {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--gemini-sidebar-hover);
-  border: 1px solid var(--gemini-border);
+  background: var(--app-sidebar-hover);
+  border: 1px solid var(--app-border);
   border-radius: 24px;
   height: 40px;
   padding: 0 16px;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
@@ -1508,14 +1591,14 @@ body.gemini-app {
 }
 
 .new-chat-btn:hover {
-  background: var(--gemini-sidebar-active);
+  background: var(--app-sidebar-active);
 }
 
 .new-chat-btn svg {
   flex-shrink: 0;
 }
 
-.gemini-sidebar.collapsed .new-chat-btn {
+.recomendator-sidebar.collapsed .new-chat-btn {
   padding: 0;
   justify-content: center;
   width: 40px;
@@ -1524,7 +1607,7 @@ body.gemini-app {
   margin: 0 auto;
 }
 
-.gemini-sidebar.collapsed .new-chat-container {
+.recomendator-sidebar.collapsed .new-chat-container {
   padding: 8px 0 16px 0;
   display: flex;
   justify-content: center;
@@ -1549,7 +1632,7 @@ body.gemini-app {
 }
 
 .sidebar-menu:hover::-webkit-scrollbar-thumb {
-  background: var(--gemini-border);
+  background: var(--app-border);
 }
 
 .sidebar-item {
@@ -1559,7 +1642,7 @@ body.gemini-app {
   height: 40px;
   padding: 0 16px;
   border-radius: 20px;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   text-decoration: none;
   cursor: pointer;
   transition: background 0.2s;
@@ -1569,19 +1652,19 @@ body.gemini-app {
 }
 
 .sidebar-item:hover {
-  background: var(--gemini-sidebar-hover);
+  background: var(--app-sidebar-hover);
 }
 
 .sidebar-item.active {
-  background: var(--gemini-sidebar-active);
+  background: var(--app-sidebar-active);
 }
 
 .sidebar-item svg {
   flex-shrink: 0;
-  color: var(--gemini-text-secondary);
+  color: var(--app-text-secondary);
 }
 
-.gemini-sidebar.collapsed .sidebar-item {
+.recomendator-sidebar.collapsed .sidebar-item {
   padding: 0;
   justify-content: center;
   width: 40px;
@@ -1590,7 +1673,7 @@ body.gemini-app {
   margin: 0 auto;
 }
 
-.gemini-sidebar.collapsed .sidebar-label {
+.recomendator-sidebar.collapsed .sidebar-label {
   display: none !important;
 }
 
@@ -1604,7 +1687,7 @@ body.gemini-app {
   height: 26px;
   border: none;
   background: transparent;
-  color: var(--gemini-text-secondary);
+  color: var(--app-text-secondary);
   border-radius: 50%;
   cursor: pointer;
   padding: 0;
@@ -1617,36 +1700,36 @@ body.gemini-app {
 }
 
 .sidebar-reset-btn:hover {
-  background: var(--gemini-border);
-  color: var(--gemini-text-primary);
+  background: var(--app-border);
+  color: var(--app-text-primary);
 }
 
-.gemini-sidebar.collapsed .sidebar-reset-btn {
+.recomendator-sidebar.collapsed .sidebar-reset-btn {
   display: none !important;
 }
 
 .sidebar-section-title {
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--gemini-text-secondary);
+  color: var(--app-text-secondary);
   padding: 16px 16px 8px 16px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.gemini-sidebar.collapsed .sidebar-section-title {
+.recomendator-sidebar.collapsed .sidebar-section-title {
   display: flex !important;
   justify-content: center;
   padding: 10px 0 4px 0 !important;
 }
 
-.gemini-sidebar.collapsed .sidebar-section-text {
+.recomendator-sidebar.collapsed .sidebar-section-text {
   display: none !important;
 }
 
 .sidebar-footer {
   padding: 12px;
-  border-top: 1px solid var(--gemini-border);
+  border-top: 1px solid var(--app-border);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1665,7 +1748,7 @@ body.gemini-app {
 }
 
 .user-profile-section:hover {
-  background: var(--gemini-sidebar-hover);
+  background: var(--app-sidebar-hover);
 }
 
 .user-avatar {
@@ -1698,7 +1781,7 @@ body.gemini-app {
 .user-name {
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1707,7 +1790,7 @@ body.gemini-app {
 .settings-btn {
   background: transparent;
   border: none;
-  color: var(--gemini-text-secondary);
+  color: var(--app-text-secondary);
   cursor: pointer;
   width: 28px;
   height: 28px;
@@ -1719,11 +1802,11 @@ body.gemini-app {
 }
 
 .settings-btn:hover {
-  background: var(--gemini-sidebar-active);
-  color: var(--gemini-text-primary);
+  background: var(--app-sidebar-active);
+  color: var(--app-text-primary);
 }
 
-.gemini-sidebar.collapsed .user-profile-section {
+.recomendator-sidebar.collapsed .user-profile-section {
   padding: 0;
   justify-content: center;
   width: 40px;
@@ -1731,8 +1814,8 @@ body.gemini-app {
   margin: 0 auto;
 }
 
-.gemini-sidebar.collapsed .user-info, 
-.gemini-sidebar.collapsed .settings-btn {
+.recomendator-sidebar.collapsed .user-info, 
+.recomendator-sidebar.collapsed .settings-btn {
   display: none !important;
 }
 
@@ -1742,8 +1825,8 @@ body.gemini-app {
   bottom: 60px;
   left: 12px;
   right: 12px;
-  background: var(--gemini-sidebar-bg);
-  border: 1px solid var(--gemini-border);
+  background: var(--app-sidebar-bg);
+  border: 1px solid var(--app-border);
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.3);
   display: none;
@@ -1763,7 +1846,7 @@ body.gemini-app {
 .profile-dropdown-item {
   padding: 8px 12px;
   font-size: 0.85rem;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   cursor: pointer;
   border-radius: 8px;
   transition: background 0.2s;
@@ -1777,7 +1860,7 @@ body.gemini-app {
 }
 
 .profile-dropdown-item:hover {
-  background: var(--gemini-sidebar-hover);
+  background: var(--app-sidebar-hover);
 }
 
 .profile-dropdown-item.danger {
@@ -1789,24 +1872,24 @@ body.gemini-app {
 }
 
 /* Right main content area */
-.gemini-main {
+.recomendator-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: var(--gemini-bg);
+  background-color: var(--app-bg);
   position: relative;
   min-width: 0;
 }
 
-.gemini-header {
+.recomendator-header {
   height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  border-bottom: 1px solid var(--gemini-border);
-  background-color: var(--gemini-bg);
+  border-bottom: 1px solid var(--app-border);
+  background-color: var(--app-bg);
   flex-shrink: 0;
 }
 
@@ -1822,8 +1905,9 @@ body.gemini-app {
   gap: 8px;
   font-weight: 500;
   font-size: 1.25rem;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   user-select: none;
+  cursor: pointer;
 }
 
 .header-brand-duck {
@@ -1840,7 +1924,7 @@ body.gemini-app {
 .sidebar-toggle-btn {
   background: transparent;
   border: none;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   cursor: pointer;
   width: 36px;
   height: 36px;
@@ -1852,17 +1936,17 @@ body.gemini-app {
 }
 
 .sidebar-toggle-btn:hover {
-  background: var(--gemini-sidebar-hover);
+  background: var(--app-sidebar-hover);
 }
 
 .model-selector {
-  background: var(--gemini-input-bg);
-  border: 1px solid var(--gemini-border);
+  background: var(--app-input-bg);
+  border: 1px solid var(--app-border);
   border-radius: 18px;
   padding: 4px 12px;
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1872,7 +1956,7 @@ body.gemini-app {
 }
 
 .model-selector:hover {
-  background: var(--gemini-sidebar-hover);
+  background: var(--app-sidebar-hover);
 }
 
 .header-right {
@@ -1882,7 +1966,7 @@ body.gemini-app {
 }
 
 /* Dashboard Inner Split Layout */
-.gemini-dashboard-layout {
+.recomendator-dashboard-layout {
   flex: 1;
   display: flex;
   height: calc(100vh - 56px);
@@ -1891,7 +1975,7 @@ body.gemini-app {
   overflow: hidden;
 }
 
-.gemini-chat-pane {
+.recomendator-chat-pane {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1902,7 +1986,7 @@ body.gemini-app {
 }
 
 /* Chat messages list */
-.gemini-chat-pane #chat-messages {
+.recomendator-chat-pane #chat-messages {
   width: 100%;
   max-width: 830px;
   flex: 1;
@@ -1915,7 +1999,7 @@ body.gemini-app {
   margin: 0 auto;
 }
 
-.gemini-chat-pane #chat-messages::after {
+.recomendator-chat-pane #chat-messages::after {
   content: '';
   height: 120px;
   display: block;
@@ -1923,21 +2007,21 @@ body.gemini-app {
 }
 
 
-.gemini-chat-pane #chat-messages::-webkit-scrollbar {
+.recomendator-chat-pane #chat-messages::-webkit-scrollbar {
   width: 8px;
 }
 
-.gemini-chat-pane #chat-messages::-webkit-scrollbar-thumb {
+.recomendator-chat-pane #chat-messages::-webkit-scrollbar-thumb {
   background: transparent;
   border-radius: 8px;
 }
 
-.gemini-chat-pane #chat-messages:hover::-webkit-scrollbar-thumb {
-  background: var(--gemini-border);
+.recomendator-chat-pane #chat-messages:hover::-webkit-scrollbar-thumb {
+  background: var(--app-border);
 }
 
 /* Message bubbles styling overrides */
-.gemini-chat-pane .message.user {
+.recomendator-chat-pane .message.user {
   align-self: flex-end;
   max-width: 70%;
   display: flex;
@@ -1945,34 +2029,34 @@ body.gemini-app {
   align-items: flex-end;
 }
 
-.gemini-chat-pane .message.user .message-bubble {
-  background-color: var(--gemini-sidebar-bg) !important;
-  border: 1px solid var(--gemini-border) !important;
+.recomendator-chat-pane .message.user .message-bubble {
+  background-color: var(--app-sidebar-bg) !important;
+  border: 1px solid var(--app-border) !important;
   border-radius: 20px 20px 4px 20px !important;
   padding: 12px 16px !important;
   font-size: 0.95rem !important;
-  color: var(--gemini-text-primary) !important;
+  color: var(--app-text-primary) !important;
   box-shadow: 0 1px 2px rgba(0,0,0,0.15) !important;
 }
 
-[data-theme="light"] .gemini-chat-pane .message.user .message-bubble {
+[data-theme="light"] .recomendator-chat-pane .message.user .message-bubble {
   background-color: #e1e9f1 !important;
 }
 
-.gemini-chat-pane .message.bot {
+.recomendator-chat-pane .message.bot {
   align-self: flex-start;
   max-width: 100%;
   width: 100%;
 }
 
-.gemini-chat-pane .message.bot .message-inner {
+.recomendator-chat-pane .message.bot .message-inner {
   display: flex;
   gap: 16px;
   align-items: flex-start;
   width: 100%;
 }
 
-.gemini-chat-pane .message.bot .message-avatar {
+.recomendator-chat-pane .message.bot .message-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -1988,31 +2072,31 @@ body.gemini-app {
   overflow: hidden;
 }
 
-.gemini-chat-pane .message.bot .message-bubble {
+.recomendator-chat-pane .message.bot .message-bubble {
   background: transparent !important;
   border: none !important;
   padding: 4px 0 !important;
   font-size: 0.98rem !important;
   line-height: 1.6 !important;
-  color: var(--gemini-text-primary) !important;
+  color: var(--app-text-primary) !important;
   width: 100%;
   box-shadow: none !important;
 }
 
-.gemini-chat-pane .message.bot .quick-replies {
+.recomendator-chat-pane .message.bot .quick-replies {
   margin-top: 12px;
   width: 100%;
   max-width: 650px;
 }
 
 /* Floating bottom input */
-.gemini-input-container {
+.recomendator-input-container {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
-  background: linear-gradient(180deg, transparent 0%, var(--gemini-bg) 30%);
+  background: linear-gradient(180deg, transparent 0%, var(--app-bg) 30%);
   padding: 16px 24px 24px 24px;
   display: flex;
   flex-direction: column;
@@ -2021,12 +2105,12 @@ body.gemini-app {
   pointer-events: none; /* Let clicks pass through background */
 }
 
-.gemini-input-bar {
+.recomendator-input-bar {
   width: 100%;
   max-width: 830px;
-  background: var(--gemini-input-bg);
+  background: var(--app-input-bg);
   border-radius: 28px;
-  border: 1px solid var(--gemini-border);
+  border: 1px solid var(--app-border);
   display: flex;
   align-items: center;
   padding: 8px 16px;
@@ -2036,7 +2120,7 @@ body.gemini-app {
   pointer-events: auto; /* Re-enable pointer events on the bar itself */
 }
 
-.gemini-input-bar:focus-within {
+.recomendator-input-bar:focus-within {
   border-color: #4285f4;
   box-shadow: 0 0 0 1px #4285f4;
 }
@@ -2044,7 +2128,7 @@ body.gemini-app {
 .input-action-btn {
   background: transparent;
   border: none;
-  color: var(--gemini-text-secondary);
+  color: var(--app-text-secondary);
   cursor: pointer;
   width: 36px;
   height: 36px;
@@ -2056,23 +2140,23 @@ body.gemini-app {
 }
 
 .input-action-btn:hover {
-  background: var(--gemini-sidebar-hover);
-  color: var(--gemini-text-primary);
+  background: var(--app-sidebar-hover);
+  color: var(--app-text-primary);
 }
 
-.gemini-input-bar input {
+.recomendator-input-bar input {
   flex: 1;
   min-width: 0;
   background: transparent !important;
   border: none !important;
-  color: var(--gemini-text-primary) !important;
+  color: var(--app-text-primary) !important;
   font-size: 0.95rem !important;
   outline: none !important;
   padding: 6px 0 !important;
 }
 
-.gemini-input-bar input::placeholder {
-  color: var(--gemini-text-secondary);
+.recomendator-input-bar input::placeholder {
+  color: var(--app-text-secondary);
   opacity: 0.8;
 }
 
@@ -2085,8 +2169,8 @@ body.gemini-app {
 .input-model-badge {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--gemini-text-secondary);
-  background: var(--gemini-sidebar-hover);
+  color: var(--app-text-secondary);
+  background: var(--app-sidebar-hover);
   padding: 2px 8px;
   border-radius: 10px;
   margin-right: 4px;
@@ -2096,7 +2180,7 @@ body.gemini-app {
 .input-send-btn {
   background: transparent;
   border: none;
-  color: var(--gemini-text-secondary);
+  color: var(--app-text-secondary);
   cursor: pointer;
   width: 0;             /* Hidden by default with zero width */
   height: 36px;
@@ -2116,17 +2200,17 @@ body.gemini-app {
   opacity: 1;
   pointer-events: auto;
   transform: scale(1);
-  background-color: var(--gemini-primary);
-  color: var(--gemini-bg);
+  background-color: var(--app-primary);
+  color: var(--app-bg);
   margin-left: 6px;     /* Push slightly from the ranking button when shown */
 }
 
 .input-send-btn.active:hover {
-  background-color: var(--gemini-primary-hover);
+  background-color: var(--app-primary-hover);
 }
 
-/* Gemini suggestion cards on welcome */
-.gemini-welcome-container {
+/* Recomendator suggestion cards on welcome */
+.recomendator-welcome-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2137,7 +2221,7 @@ body.gemini-app {
   width: 100%;
 }
 
-.gemini-welcome-title {
+.recomendator-welcome-title {
   font-size: 2.8rem;
   font-weight: 400;
   margin-bottom: 8px;
@@ -2146,15 +2230,15 @@ body.gemini-app {
   -webkit-text-fill-color: transparent;
 }
 
-.gemini-welcome-subtitle {
+.recomendator-welcome-subtitle {
   font-size: 1.15rem;
-  color: var(--gemini-text-secondary);
+  color: var(--app-text-secondary);
   margin-bottom: 40px;
   max-width: 480px;
   line-height: 1.5;
 }
 
-.gemini-welcome-cards {
+.recomendator-welcome-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
@@ -2162,9 +2246,9 @@ body.gemini-app {
   max-width: 800px;
 }
 
-.gemini-welcome-card {
-  background-color: var(--gemini-sidebar-bg);
-  border: 1px solid var(--gemini-border);
+.recomendator-welcome-card {
+  background-color: var(--app-sidebar-bg);
+  border: 1px solid var(--app-border);
   border-radius: 16px;
   padding: 20px;
   text-align: left;
@@ -2176,28 +2260,28 @@ body.gemini-app {
   min-height: 150px;
 }
 
-.gemini-welcome-card:hover {
-  background-color: var(--gemini-sidebar-hover);
+.recomendator-welcome-card:hover {
+  background-color: var(--app-sidebar-hover);
   transform: translateY(-4px);
   border-color: #4285f4;
   box-shadow: 0 4px 12px rgba(66, 133, 244, 0.1);
 }
 
-.gemini-welcome-card .card-icon {
+.recomendator-welcome-card .card-icon {
   font-size: 1.8rem;
   margin-bottom: 12px;
 }
 
-.gemini-welcome-card .card-title {
+.recomendator-welcome-card .card-title {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--gemini-text-primary);
+  color: var(--app-text-primary);
   margin-bottom: 4px;
 }
 
-.gemini-welcome-card .card-desc {
+.recomendator-welcome-card .card-desc {
   font-size: 0.8rem;
-  color: var(--gemini-text-secondary);
+  color: var(--app-text-secondary);
   line-height: 1.4;
 }
 
@@ -2229,20 +2313,20 @@ body.gemini-app {
 }
 
 /* Welcome card — concluída */
-.gemini-welcome-card.step-done {
+.recomendator-welcome-card.step-done {
   border-color: rgba(16, 185, 129, 0.45);
   box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.15),
               0 4px 20px rgba(16, 185, 129, 0.08);
   background: linear-gradient(
     135deg,
     rgba(16, 185, 129, 0.06) 0%,
-    var(--gemini-sidebar-bg) 60%
+    var(--app-sidebar-bg) 60%
   );
   position: relative;
   overflow: hidden;
 }
 
-.gemini-welcome-card.step-done::after {
+.recomendator-welcome-card.step-done::after {
   content: '';
   position: absolute;
   top: 0;
@@ -2253,7 +2337,7 @@ body.gemini-app {
   border-radius: 16px 16px 0 0;
 }
 
-.gemini-welcome-card.step-done:hover {
+.recomendator-welcome-card.step-done:hover {
   border-color: rgba(16, 185, 129, 0.7);
   box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.3),
               0 6px 24px rgba(16, 185, 129, 0.15);
@@ -2289,10 +2373,10 @@ body.gemini-app {
 }
 
 /* Right side panel (Ranking) */
-.gemini-ranking-pane {
+.recomendator-ranking-pane {
   width: 380px;
-  background-color: var(--gemini-sidebar-bg);
-  border-left: 1px solid var(--gemini-border);
+  background-color: var(--app-sidebar-bg);
+  border-left: 1px solid var(--app-border);
   height: 100%;
   display: none;
   flex-direction: column;
@@ -2302,33 +2386,33 @@ body.gemini-app {
   z-index: 9;
 }
 
-.gemini-dashboard-layout.show-ranking .gemini-ranking-pane {
+.recomendator-dashboard-layout.show-ranking .recomendator-ranking-pane {
   display: flex;
 }
 
-.gemini-ranking-pane .ranking-header {
-  border-bottom: 1px solid var(--gemini-border);
+.recomendator-ranking-pane .ranking-header {
+  border-bottom: 1px solid var(--app-border);
   padding-bottom: 12px;
   margin-bottom: 16px;
 }
 
-.gemini-ranking-pane .ranking-header h3 {
-  color: var(--gemini-text-primary);
+.recomendator-ranking-pane .ranking-header h3 {
+  color: var(--app-text-primary);
   font-size: 1.1rem;
 }
 
-.gemini-ranking-pane .ranking-list-container {
+.recomendator-ranking-pane .ranking-list-container {
   flex: 1;
   overflow-y: auto;
   padding-right: 4px;
 }
 
-.gemini-ranking-pane .ranking-list-container::-webkit-scrollbar {
+.recomendator-ranking-pane .ranking-list-container::-webkit-scrollbar {
   width: 6px;
 }
 
-.gemini-ranking-pane .ranking-list-container::-webkit-scrollbar-thumb {
-  background: var(--gemini-border);
+.recomendator-ranking-pane .ranking-list-container::-webkit-scrollbar-thumb {
+  background: var(--app-border);
   border-radius: 10px;
 }
 
@@ -2345,37 +2429,44 @@ body.gemini-app {
 }
 
 @media (max-width: 900px) {
+  .sidebar-reset-btn {
+    display: flex !important;
+  }
   .header-brand {
     display: flex;
   }
 
-  .gemini-sidebar {
+  .recomendator-sidebar {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
     width: 280px;
     transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
   }
-  .gemini-sidebar.expanded {
+  .recomendator-sidebar.expanded {
     transform: translateX(0);
   }
   .sidebar-overlay.show {
     display: block;
   }
-  .gemini-ranking-pane {
+  .recomendator-ranking-pane {
     position: fixed;
     right: 0;
     top: 56px;
     bottom: 0;
     width: 320px;
     transform: translateX(100%);
+    display: flex !important;
+    visibility: hidden;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), visibility 0.3s;
   }
-  .gemini-dashboard-layout.show-ranking .gemini-ranking-pane {
+  .recomendator-dashboard-layout.show-ranking .recomendator-ranking-pane {
     transform: translateX(0);
-    display: flex;
+    visibility: visible;
   }
-  .gemini-sidebar.collapsed {
+  .recomendator-sidebar.collapsed {
     width: 280px;
     transform: translateX(-100%);
   }
@@ -2394,7 +2485,7 @@ body.gemini-app {
   }
 }
 
-.gemini-sidebar.collapsed .sidebar-brand {
+.recomendator-sidebar.collapsed .sidebar-brand {
   display: flex !important;
   justify-content: center;
   align-items: center;
@@ -2402,26 +2493,26 @@ body.gemini-app {
   cursor: pointer;
 }
 
-.gemini-sidebar.collapsed .sidebar-header .hamburger-btn {
+.recomendator-sidebar.collapsed .sidebar-header .hamburger-btn {
   display: none !important;
 }
 
-.gemini-sidebar.collapsed .sidebar-header {
+.recomendator-sidebar.collapsed .sidebar-header {
   justify-content: center;
   padding: 0;
   cursor: pointer;
 }
 
-.gemini-sidebar.collapsed .sidebar-header-text {
+.recomendator-sidebar.collapsed .sidebar-header-text {
   display: none !important;
 }
 
 /* Hover swap: patinho para painel expandir (panel-left-open) */
-.gemini-sidebar.collapsed .sidebar-header:hover .sidebar-brand {
+.recomendator-sidebar.collapsed .sidebar-header:hover .sidebar-brand {
   display: none !important;
 }
 
-.gemini-sidebar.collapsed .sidebar-header:hover .hamburger-btn {
+.recomendator-sidebar.collapsed .sidebar-header:hover .hamburger-btn {
   display: flex !important;
   margin: 0 auto;
 }
@@ -2435,30 +2526,42 @@ body.gemini-app {
   display: none;
 }
 
-.gemini-sidebar.collapsed .sidebar-header:hover .hamburger-btn .icon-collapse {
+.recomendator-sidebar.collapsed .sidebar-header:hover .hamburger-btn .icon-collapse {
   display: none !important;
 }
 
-.gemini-sidebar.collapsed .sidebar-header:hover .hamburger-btn .icon-menu {
+.recomendator-sidebar.collapsed .sidebar-header:hover .hamburger-btn .icon-menu {
   display: block !important;
 }
 
 /* ==========================================================================
-   SWEETALERT2 – MODERN GEMINI-THEMED OVERRIDES
+   SWEETALERT2 – MODERN RECOMENDATOR-THEMED OVERRIDES
    ========================================================================== */
 
-/* Backdrop: blurred overlay */
-.swal2-container.swal2-backdrop-show {
+/* Backdrop: blurred overlay - only for modals, not for toasts */
+.swal2-container.swal2-backdrop-show:not(.swal2-toast-container) {
   background: rgba(0, 0, 0, 0.45) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
 }
 
+/* Ensure toast container is completely transparent, does not block clicks, and has no blur */
+.swal2-container.swal2-toast-container {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: none !important;
+}
+
+.swal2-container.swal2-toast-container .swal2-popup {
+  pointer-events: auto !important; /* Allow clicking on the toast itself */
+}
+
 /* Popup container */
-.swal2-popup.swal-gemini {
-  background: var(--gemini-sidebar-bg, #1e1f20) !important;
-  color: var(--gemini-text-primary, #e3e3e3) !important;
-  border: 1px solid var(--gemini-border, #2e2f30) !important;
+.swal2-popup.swal-recomendator {
+  background: var(--app-sidebar-bg, #1e1f20) !important;
+  color: var(--app-text-primary, #e3e3e3) !important;
+  border: 1px solid var(--app-border, #2e2f30) !important;
   border-radius: 24px !important;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.04) !important;
   padding: 2.2rem 2rem 1.6rem !important;
@@ -2467,12 +2570,12 @@ body.gemini-app {
 }
 
 /* Entrance animation — only when showing */
-.swal2-popup.swal-gemini.swal2-show {
+.swal2-popup.swal-recomendator.swal2-show {
   animation: swalSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 /* Exit animation — only when hiding */
-.swal2-popup.swal-gemini.swal2-hide {
+.swal2-popup.swal-recomendator.swal2-hide {
   animation: swalSlideOut 0.2s ease-in forwards !important;
 }
 
@@ -2487,8 +2590,8 @@ body.gemini-app {
 }
 
 /* Title */
-.swal2-popup.swal-gemini .swal2-title {
-  color: var(--gemini-text-primary, #e3e3e3) !important;
+.swal2-popup.swal-recomendator .swal2-title {
+  color: var(--app-text-primary, #e3e3e3) !important;
   font-family: 'Outfit', sans-serif !important;
   font-size: 1.2rem !important;
   font-weight: 600 !important;
@@ -2497,8 +2600,8 @@ body.gemini-app {
 }
 
 /* Text / html content */
-.swal2-popup.swal-gemini .swal2-html-container {
-  color: var(--gemini-text-secondary, #c4c7c5) !important;
+.swal2-popup.swal-recomendator .swal2-html-container {
+  color: var(--app-text-secondary, #c4c7c5) !important;
   font-family: 'Outfit', sans-serif !important;
   font-size: 0.92rem !important;
   line-height: 1.55 !important;
@@ -2507,54 +2610,54 @@ body.gemini-app {
 }
 
 /* Icons – subtle and colorful */
-.swal2-popup.swal-gemini .swal2-icon {
+.swal2-popup.swal-recomendator .swal2-icon {
   border-width: 2px !important;
   margin: 0 auto 1rem !important;
 }
 
-.swal2-popup.swal-gemini .swal2-icon .swal2-icon-content {
+.swal2-popup.swal-recomendator .swal2-icon .swal2-icon-content {
   font-size: 2rem !important;
 }
 
-.swal2-popup.swal-gemini .swal2-icon.swal2-warning {
+.swal2-popup.swal-recomendator .swal2-icon.swal2-warning {
   border-color: rgba(251, 191, 36, 0.35) !important;
   color: #fbbf24 !important;
 }
 
-.swal2-popup.swal-gemini .swal2-icon.swal2-success {
+.swal2-popup.swal-recomendator .swal2-icon.swal2-success {
   border-color: rgba(34, 197, 94, 0.35) !important;
 }
 
-.swal2-popup.swal-gemini .swal2-icon.swal2-success [class^="swal2-success-line"] {
+.swal2-popup.swal-recomendator .swal2-icon.swal2-success [class^="swal2-success-line"] {
   background-color: #22c55e !important;
 }
 
-.swal2-popup.swal-gemini .swal2-icon.swal2-success .swal2-success-ring {
+.swal2-popup.swal-recomendator .swal2-icon.swal2-success .swal2-success-ring {
   border-color: rgba(34, 197, 94, 0.35) !important;
 }
 
-.swal2-popup.swal-gemini .swal2-icon.swal2-error {
+.swal2-popup.swal-recomendator .swal2-icon.swal2-error {
   border-color: rgba(239, 68, 68, 0.35) !important;
 }
 
-.swal2-popup.swal-gemini .swal2-icon.swal2-error [class^="swal2-x-mark-line"] {
+.swal2-popup.swal-recomendator .swal2-icon.swal2-error [class^="swal2-x-mark-line"] {
   background-color: #ef4444 !important;
 }
 
-.swal2-popup.swal-gemini .swal2-icon.swal2-info {
+.swal2-popup.swal-recomendator .swal2-icon.swal2-info {
   border-color: rgba(168, 199, 250, 0.35) !important;
-  color: var(--gemini-primary, #a8c7fa) !important;
+  color: var(--app-primary, #a8c7fa) !important;
 }
 
 /* Actions / Buttons container */
-.swal2-popup.swal-gemini .swal2-actions {
+.swal2-popup.swal-recomendator .swal2-actions {
   margin-top: 1.5rem !important;
   gap: 10px !important;
 }
 
 /* Confirm button – filled pill */
-.swal2-popup.swal-gemini .swal2-confirm {
-  background: var(--gemini-primary, #a8c7fa) !important;
+.swal2-popup.swal-recomendator .swal2-confirm {
+  background: var(--app-primary, #a8c7fa) !important;
   color: #131314 !important;
   border: none !important;
   border-radius: 20px !important;
@@ -2566,24 +2669,24 @@ body.gemini-app {
   transition: background 0.2s, transform 0.15s !important;
 }
 
-.swal2-popup.swal-gemini .swal2-confirm:hover {
-  background: var(--gemini-primary-hover, #c2e7ff) !important;
+.swal2-popup.swal-recomendator .swal2-confirm:hover {
+  background: var(--app-primary-hover, #c2e7ff) !important;
   transform: translateY(-1px) !important;
 }
 
-.swal2-popup.swal-gemini .swal2-confirm:active {
+.swal2-popup.swal-recomendator .swal2-confirm:active {
   transform: translateY(0) !important;
 }
 
-.swal2-popup.swal-gemini .swal2-confirm:focus {
+.swal2-popup.swal-recomendator .swal2-confirm:focus {
   box-shadow: 0 0 0 3px rgba(168, 199, 250, 0.3) !important;
 }
 
 /* Cancel button – ghost / outlined pill */
-.swal2-popup.swal-gemini .swal2-cancel {
+.swal2-popup.swal-recomendator .swal2-cancel {
   background: transparent !important;
-  color: var(--gemini-text-secondary, #c4c7c5) !important;
-  border: 1px solid var(--gemini-border, #2e2f30) !important;
+  color: var(--app-text-secondary, #c4c7c5) !important;
+  border: 1px solid var(--app-border, #2e2f30) !important;
   border-radius: 20px !important;
   font-family: 'Outfit', sans-serif !important;
   font-size: 0.88rem !important;
@@ -2593,17 +2696,17 @@ body.gemini-app {
   transition: background 0.2s, border-color 0.2s !important;
 }
 
-.swal2-popup.swal-gemini .swal2-cancel:hover {
-  background: var(--gemini-sidebar-hover, #2e2f30) !important;
-  border-color: var(--gemini-text-secondary, #c4c7c5) !important;
+.swal2-popup.swal-recomendator .swal2-cancel:hover {
+  background: var(--app-sidebar-hover, #2e2f30) !important;
+  border-color: var(--app-text-secondary, #c4c7c5) !important;
 }
 
 /* Input field inside Swal (for prompts) */
-.swal2-popup.swal-gemini .swal2-input,
-.swal2-popup.swal-gemini .swal2-textarea {
-  background: var(--gemini-bg, #131314) !important;
-  color: var(--gemini-text-primary, #e3e3e3) !important;
-  border: 1px solid var(--gemini-border, #2e2f30) !important;
+.swal2-popup.swal-recomendator .swal2-input,
+.swal2-popup.swal-recomendator .swal2-textarea {
+  background: var(--app-bg, #131314) !important;
+  color: var(--app-text-primary, #e3e3e3) !important;
+  border: 1px solid var(--app-border, #2e2f30) !important;
   border-radius: 12px !important;
   font-family: 'Outfit', sans-serif !important;
   font-size: 0.92rem !important;
@@ -2611,35 +2714,35 @@ body.gemini-app {
   transition: border-color 0.2s !important;
 }
 
-.swal2-popup.swal-gemini .swal2-input:focus,
-.swal2-popup.swal-gemini .swal2-textarea:focus {
-  border-color: var(--gemini-primary, #a8c7fa) !important;
+.swal2-popup.swal-recomendator .swal2-input:focus,
+.swal2-popup.swal-recomendator .swal2-textarea:focus {
+  border-color: var(--app-primary, #a8c7fa) !important;
   box-shadow: 0 0 0 3px rgba(168, 199, 250, 0.15) !important;
 }
 
 /* Close button */
-.swal2-popup.swal-gemini .swal2-close {
-  color: var(--gemini-text-secondary, #c4c7c5) !important;
+.swal2-popup.swal-recomendator .swal2-close {
+  color: var(--app-text-secondary, #c4c7c5) !important;
   font-size: 1.4rem !important;
   transition: color 0.2s !important;
 }
 
-.swal2-popup.swal-gemini .swal2-close:hover {
-  color: var(--gemini-text-primary, #e3e3e3) !important;
+.swal2-popup.swal-recomendator .swal2-close:hover {
+  color: var(--app-text-primary, #e3e3e3) !important;
 }
 
 /* Light mode overrides for SweetAlert2 */
-[data-theme="light"] .swal2-popup.swal-gemini {
+[data-theme="light"] .swal2-popup.swal-recomendator {
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0,0,0,0.06) !important;
 }
 
-[data-theme="light"] .swal2-popup.swal-gemini .swal2-confirm {
+[data-theme="light"] .swal2-popup.swal-recomendator .swal2-confirm {
   color: #ffffff !important;
 }
 
 /* Toggle Ranking Button inside input field active state */
 .input-action-btn.active {
-  color: var(--gemini-primary) !important;
+  color: var(--app-primary) !important;
   background: rgba(66, 133, 244, 0.15) !important;
 }
 
@@ -2650,13 +2753,13 @@ body.gemini-app {
 }
 
 @media (max-width: 600px) {
-  .gemini-chat-pane #chat-messages {
+  .recomendator-chat-pane #chat-messages {
     padding: 16px 12px !important;
   }
-  .gemini-chat-pane #chat-messages::after {
+  .recomendator-chat-pane #chat-messages::after {
     height: 100px;
   }
-  .gemini-input-container {
+  .recomendator-input-container {
     padding: 12px 16px 16px 16px !important;
   }
   #input-toggle-ranking {
@@ -2670,4 +2773,56 @@ body.gemini-app {
   #input-toggle-ranking span {
     display: none !important;
   }
+}
+
+/* ==========================================================================
+   SweetAlert2 Custom Toast styles (Top center premium toast)
+   ========================================================================== */
+.swal2-popup.swal-recomendator-toast {
+  background: rgba(30, 31, 32, 0.9) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  color: var(--app-text-primary, #e3e3e3) !important;
+  border: 1px solid var(--app-border, #2e2f30) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45) !important;
+  padding: 0.6rem 1.2rem !important;
+  font-family: 'Outfit', 'Inter', sans-serif !important;
+  margin-top: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+[data-theme="light"] .swal2-popup.swal-recomendator-toast {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #1f1f1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08) !important;
+}
+
+.swal2-popup.swal-recomendator-toast .swal2-title {
+  color: var(--app-text-primary, #e3e3e3) !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+[data-theme="light"] .swal2-popup.swal-recomendator-toast .swal2-title {
+  color: #1f1f1f !important;
+}
+
+.swal2-popup.swal-recomendator-toast .swal2-icon {
+  margin: 0 8px 0 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.swal2-popup.swal-recomendator-toast.swal2-show {
+  animation: swalToastSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+@keyframes swalToastSlideIn {
+  0% { transform: translateY(-40px) scale(0.95); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
 }

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações da Conta | Recomendator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="patinho-favicon.png">
+    
+    <!-- PWA Settings -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="patinho-amarelo-atendente.svg">
+</head>
+<body>
+    <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+        <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+    </button>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <div class="glass-card">
+            <div style="display: flex; justify-content: center; margin-bottom: 0.5rem;">
+                <img src="patinho-amarelo.svg" alt="Patinho" width="48" height="48">
+            </div>
+            <h1>Minha Conta</h1>
+            <p>Atualize as informações do seu perfil e credenciais</p>
+            
+            <form id="profileForm" action="#" method="POST">
+                <div class="form-group">
+                    <label for="name">Nome Completo</label>
+                    <input type="text" id="name" name="name" placeholder="Carregando..." required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="Carregando..." required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Nova Senha (deixe em branco para não alterar)</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="btn-save-profile">Salvar Alterações</button>
+            </form>
+
+            <!-- Option to install app -->
+            <div id="pwaInstallContainer" style="display: none; margin-top: 1.25rem; padding: 0.75rem; background: rgba(59, 130, 246, 0.08); border: 1px dashed var(--primary-color); border-radius: 12px; text-align: center;">
+                <p style="margin-bottom: 0.5rem; font-size: 0.82rem; color: var(--text-primary); font-weight: 500;">Instale o aplicativo do Recomendator no seu celular</p>
+                <button type="button" id="btnInstallPWA" class="btn btn-primary btn-compact" style="width: auto; margin: 0 auto; display: inline-flex; font-size: 0.8rem;">Instalar Aplicativo</button>
+            </div>
+
+            <a href="chat.html" class="footer-link" id="backLink">Voltar ao Chat</a>
+            <a href="admin.html" class="footer-link" id="adminBackLink" style="margin-top: 0.25rem; display: none;">Voltar ao Painel Admin</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

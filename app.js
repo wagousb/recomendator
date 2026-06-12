@@ -4,10 +4,10 @@
 const savedTheme = localStorage.getItem('theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
-// Global SweetAlert2 defaults – apply modern Gemini theme to ALL popups
+// Global SweetAlert2 defaults – apply modern Recomendator theme to ALL popups
 if (typeof Swal !== 'undefined') {
     const SwalDefault = Swal.mixin({
-        customClass: { popup: 'swal-gemini' },
+        customClass: { popup: 'swal-recomendator' },
         buttonsStyling: true
     });
     window.Swal = SwalDefault;
@@ -192,8 +192,36 @@ try {
     });
 
     async function verificarSessao() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
+        try {
+            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+            
+            let isValid = !!session;
+            if (session) {
+                const now = Math.floor(Date.now() / 1000);
+                if (session.expires_at && session.expires_at <= now) {
+                    try {
+                        const { data: { user }, error: userError } = await supabase.auth.getUser();
+                        if (userError || !user) {
+                            isValid = false;
+                        }
+                    } catch (e) {
+                        isValid = false;
+                    }
+                }
+            }
+
+            if (sessionError || !isValid) {
+                const path = window.location.pathname.toLowerCase();
+                const isChatOrAdmin = path.endsWith('chat.html') || path.endsWith('admin.html') || path.endsWith('profile.html');
+                if (isChatOrAdmin) {
+                    try {
+                        await supabase.auth.signOut();
+                    } catch (e) {}
+                    window.location.href = 'login.html';
+                }
+                return;
+            }
+
             const path = window.location.pathname.toLowerCase();
             const isLandingOrAuthPage = 
                 path === '' ||
@@ -207,6 +235,8 @@ try {
                 window.location.href = 'chat.html';
                 return;
             }
+        } catch (err) {
+            console.error("Erro ao verificar sessão:", err);
         }
     }
 
