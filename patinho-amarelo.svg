@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Body & Head Fill -->
+    <path d="M 9,7.2 C 9,5.2 11,3.5 13,3.5 C 15.2,3.5 17,5.3 17,7.5 C 17,9.5 15.5,11.5 15,12.5 C 15.5,13 17.5,13 19.5,10.5 C 20.2,12.5 17,22 13.5,22 C 10.5,22 7,20.5 7,17.5 C 7,15.5 8,13.5 9.8,12.8 Z" fill="#fde047" stroke="none" />
+    <!-- Head Outline -->
+    <path d="M 9,7.2 C 9,5.2 11,3.5 13,3.5 C 15.2,3.5 17,5.3 17,7.5 C 17,9.5 15.5,11.5 15,12.5 C 15.5,13 17.5,13 19.5,10.5" />
+    <!-- Body Outline -->
+    <path d="M 9.8,12.8 C 8,13.5 7,15.5 7,17.5 C 7,20.5 10.5,22 13.5,22 C 17,22 19.5,19.5 20.2,12.5 C 20.3,11.5 20.1,10.8 19.5,10.5" />
+    <!-- Beak -->
+    <path d="M 9,7.2 C 7.5,7.2 6,7.8 5,8.5 C 4.5,9.2 6.5,10.2 8.8,10.2 C 9.3,9.2 9.2,8.2 9,7.2 Z" fill="#f97316" stroke="#ea580c" stroke-width="1.2" />
+    <!-- Eye -->
+    <circle cx="12" cy="7.5" r="1" fill="#0f172a" stroke="none" />
+</svg>
